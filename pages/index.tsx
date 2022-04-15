@@ -12,7 +12,7 @@ const Home: NextPage = () => {
           <h1 className="font-bold text-2xl">
             Hi! {`I'm`} Jorge and I build stuff with code.{" "}
           </h1>
-          <p>My site is currently under construction. Gatos! </p>
+          <p>My site is currently under construction. </p>
         </div>
         <div className="container">
           <h2 className="pb-3">
