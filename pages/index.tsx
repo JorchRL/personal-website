@@ -6,30 +6,31 @@ import footerPic from "../public/bg.png";
 
 const Home: NextPage = () => {
   return (
-    <div className="container min-h-screen flex flex-col">
-      <article className="flex-1 px-9 mt-10 flex justify-start items-center">
-        <div className="container self-start">
-          <h1 className="font-bold text-2xl">
-            Hi! {`I'm`} Jorge and I build stuff with code.{" "}
-          </h1>
-          <p>My site is currently under construction. </p>
-        </div>
-        <div className="container">
-          <h2 className="pb-3">
-            In the meantime, why not check out my blog on Hashnode?
-          </h2>
-          <button className=" text-white hover:text-blue-900 hover:bg-slate-300 font-bold bg-slate-500 rounded-full py-3 px-3">
-            <a href="https://jorgerl.hashnode.dev">{`Jorch's Mini Blog`}</a>
-          </button>
-        </div>
-      </article>
-      <footer>
-        <Image
-          src={footerPic}
-          layout="responsive"
-          alt="drawing of my blog's avatar"
-        />
-      </footer>
+    <div >
+      <h1 className="px-6 font-bold text-3xl mt-[60vh]">
+        Jorge builds stuff with code
+      </h1>
+
+      <div className="bg-blue-500 flex justify-center my-10">
+        <span className="text-white h-40">works</span>
+      </div>
+
+      <div className="px-6">
+
+        <h2 className="pb-5 text-3xl">And <b>software</b> for your business</h2>
+
+        <h3 className="pb-5 text-xl"><b>Jorge Romero.</b> Freelance software developer</h3>
+
+        <p className="text-xs pb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi consequatur quia accusamus illo similique, dolor consequuntur ratione provident molestias saepe.</p>
+
+        <p className="text-xs pb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur omnis ratione, hic quas ullam repudiandae.</p>
+
+        <p className="text-xs pb-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea neque possimus expedita quasi? Odio, natus.</p>
+
+        <hr />
+
+      </div>
+
     </div>
   );
 };

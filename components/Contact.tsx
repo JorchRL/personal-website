@@ -8,26 +8,27 @@ import whatsappLogo from "../assets/icons/WhatsApp.png"
 
 const Contact = () => {
     return (
-        <div className="">
-            <h1 className="text-3xl font-bold">Talk to me.</h1>
-            <h2 className="text-xl font-bold">hello@jrlgs.dev</h2>
-            <ul className="flex">
-                <li>
+        <div className="px-6 py-20">
+            <h1 className="text-3xl font-bold pb-3">Talk to me.</h1>
+            <h2 className="text-lg font-bold">hello@jrlgs.dev</h2>
+
+            <ul className="flex justify-between pt-10 px-10">
+                <li className="w-10 h-10">
                     <Link href="https://twitter.com/jrlgs">
-                        <Image src={twitterLogo} />
+                        <Image className="" src={twitterLogo} />
                     </Link>
                 </li>
-                <li>
+                <li className="w-10 h-10">
                     <Link href="https://linkedin.com/in/jorchrl">
                         <Image src={linkedInLogo} />
                     </Link>
                 </li>
-                <li>
+                <li className="w-10 h-10">
                     <Link href="https://github.com/jorchrl">
                         <Image src={githubLogo} />
                     </Link>
                 </li>
-                <li>
+                <li className="w-10 h-10">
                     <Link href="https://wa.me/527773369629">
                         <Image src={whatsappLogo} />
                     </Link>
