@@ -10,7 +10,7 @@ const Contact = () => {
     return (
         <div className="px-6 py-20">
             <h1 className="text-3xl font-bold pb-3">Talk to me.</h1>
-            <h2 className="text-lg font-bold">hello@jrlgs.dev</h2>
+            
 
             <ul className="flex justify-between pt-10 px-10">
                 <li className="w-10 h-10">
