@@ -7,7 +7,7 @@ import footerPic from "../public/bg.png";
 const Home: NextPage = () => {
   return (
     <div >
-      <h1 className="px-6 font-bold text-3xl">
+      <h1 className="px-6 font-bold text-3xl mt-auto">
         Jorge builds stuff with code
       </h1>
 
