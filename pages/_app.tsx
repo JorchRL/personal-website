@@ -16,9 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           <h1 className="font-bold text-3xl font-sans">JR</h1>
         </Link>
 
-        <Link href="/projects">
+        <Link href="/">
           <span className="text-lg ">
-            Projects
+            
           </span>
         </Link>
 
