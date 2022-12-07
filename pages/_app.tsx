@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <footer  >
         <Contact />
-        <WorkFooter />
+       
       </footer>
 
     </div>
