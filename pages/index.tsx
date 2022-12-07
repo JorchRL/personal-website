@@ -12,7 +12,7 @@ const Home: NextPage = () => {
       </h1>
 
       <div className="bg-blue-500 flex justify-center my-10">
-        <span className="text-white h-40">works</span>
+     
       </div>
 
       <div className="px-6">
@@ -21,11 +21,7 @@ const Home: NextPage = () => {
 
         <h3 className="pb-5 text-xl"><b>Jorge Romero.</b> Freelance software developer</h3>
 
-        <p className="text-xs pb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi consequatur quia accusamus illo similique, dolor consequuntur ratione provident molestias saepe.</p>
-
-        <p className="text-xs pb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur omnis ratione, hic quas ullam repudiandae.</p>
-
-        <p className="text-xs pb-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea neque possimus expedita quasi? Odio, natus.</p>
+       
 
         <hr />
 
