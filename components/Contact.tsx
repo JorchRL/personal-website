@@ -13,22 +13,22 @@ const Contact = () => {
             
 
             <ul className="flex justify-between pt-10 px-10">
-                <li className="w-10 h-10">
+                <li className="w-10 h-10 hover:bg-sky-700 hover:cursor-pointer">
                     <Link href="https://twitter.com/jrlgs">
                         <Image className="" src={twitterLogo} />
                     </Link>
                 </li>
-                <li className="w-10 h-10">
+                <li className="w-10 h-10 hover:bg-sky-700 hover:cursor-pointer">
                     <Link href="https://linkedin.com/in/jorchrl">
                         <Image src={linkedInLogo} />
                     </Link>
                 </li>
-                <li className="w-10 h-10">
+                <li className="w-10 h-10 hover:bg-sky-700 hover:cursor-pointer">
                     <Link href="https://github.com/jorchrl">
                         <Image src={githubLogo} />
                     </Link>
                 </li>
-                <li className="w-10 h-10">
+                <li className="w-10 h-10 hover:bg-sky-700 hover:cursor-pointer">
                     <Link href="https://wa.me/527773369629">
                         <Image src={whatsappLogo} />
                     </Link>
