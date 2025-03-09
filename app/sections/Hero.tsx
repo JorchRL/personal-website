@@ -28,19 +28,6 @@ export default function Hero() {
             I craft <span className="font-semibold">minimal</span> and <span className="font-semibold">elegant</span> digital experiences with meticulous attention to detail and clean code.
           </motion.p>
           
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-t border-b border-black/20 dark:border-white/20 py-5 my-16 flex flex-col items-center"
-          >
-            <Link 
-              href="#projects" 
-              className="text-sm uppercase tracking-widest hover:opacity-70 transition-opacity py-2"
-            >
-              View Projects
-            </Link>
-          </motion.div>
         </div>
       </div>
     </section>

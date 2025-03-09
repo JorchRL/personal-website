@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import Ribbon from '../components/Ribbon'
 
 // Sample project data - replace with your actual projects
 const projects = [
@@ -57,150 +57,71 @@ const projects = [
   },
 ]
 
-interface ProjectItemProps {
-  project: typeof projects[0]
-  index: number
-  openProject: (slug: string) => void
-}
-
-function ProjectItem({ project, index, openProject }: ProjectItemProps) {
-  const [isHovered, setIsHovered] = useState(false)
-  const itemRef = useRef(null)
-  const isInView = useInView(itemRef, { once: false, amount: 0.1 })
-
-  return (
-    <motion.div
-      ref={itemRef}
-      layoutId={`project-${project.slug}`}
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ 
-        duration: 0.8, 
-        delay: index * 0.2,
-        ease: [0.16, 1, 0.3, 1] 
-      }}
-      onClick={() => openProject(project.slug)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="project-item w-full h-full aspect-square relative"
-    >
-      <div className="absolute inset-0">
-        <Image 
-          src={project.image} 
-          alt={project.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover grayscale transition-all duration-700"
-          style={{
-            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-          }}
-        />
-        <div className={`absolute inset-0 bg-black/60 dark:bg-black/70 flex items-center justify-center transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="p-6 max-w-xs">
-            <motion.h3
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-lg font-bold text-white mb-2"
-            >
-              {project.title}
-            </motion.h3>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-              className="text-sm text-white/80 mb-4 line-clamp-3"
-            >
-              {project.description}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
-              className="flex flex-wrap gap-2"
-            >
-              {project.tags.map((tag) => (
-                <span 
-                  key={tag} 
-                  className="text-xs px-2 py-1 border border-white/30 text-white/90"
-                >
-                  {tag}
-                </span>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
 export default function Projects() {
   const router = useRouter()
   const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: false, amount: 0.1 })
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
 
   const openProject = (slug: string) => {
-    // Set the selected ID to trigger the animation
-    setSelectedId(slug)
-    
-    // After animation, navigate to project page
-    setTimeout(() => {
-      router.push(`/projects/${slug}`)
-    }, 600)
+    // Find the project data
+    const project = projects.find(p => p.slug === slug)
+    if (project) {
+      // Set selected project data
+      setSelectedProject(project)
+      // Set the selected ID to trigger the animation
+      setSelectedId(slug)
+      
+      // After animation, navigate to project page
+      setTimeout(() => {
+        router.push(`/projects/${slug}`)
+      }, 800)
+    }
   }
 
   return (
     <section
       id="projects"
       ref={sectionRef}
-      className="py-40"
     >
-      <div className="container mx-auto px-4 md:px-0">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="text-2xl uppercase tracking-widest mb-24 text-center"
-        >
-          Projects
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px">
-          {projects.map((project, index) => (
-            <div key={project.id} className="aspect-square">
-              <ProjectItem 
-                project={project} 
-                index={index} 
-                openProject={openProject}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      <Ribbon projects={projects} openProject={openProject} />
 
       <AnimatePresence>
-        {selectedId && (
+        {selectedId && selectedProject && (
           <motion.div
             layoutId={`project-${selectedId}`}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-black"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.3 } }}
           >
             <motion.div 
-              className="w-full h-full flex items-center justify-center"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 1.2 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full h-full relative overflow-hidden"
+              initial={{ borderRadius: 16 }}
+              animate={{ borderRadius: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="w-5 h-5 border-t border-black dark:border-white rounded-full animate-spin"></div>
+              <motion.img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                className="w-full h-full object-cover"
+                initial={{ scale: 1.2, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              />
+              
+              <div className="absolute inset-0 opacity-0">
+                <div className="container mx-auto px-8 pb-16">
+                  <h2 className="text-4xl font-light text-white mb-4">{selectedProject.title}</h2>
+                  <div className="w-16 h-[1px] bg-white/30 mb-6" />
+                  <p className="text-white/70 max-w-xl">{selectedProject.description}</p>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
     </section>
   )
 } 
