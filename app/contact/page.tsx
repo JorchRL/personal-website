@@ -61,15 +61,15 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="border border-black/20 dark:border-white/20 p-6">
                   <h3 className="text-xs uppercase tracking-widest text-black/60 dark:text-white/60 mb-2">Email</h3>
-                  <a href="mailto:contact@jorgeromero.dev" className="text-lg hover:underline">
-                    contact@jorgeromero.dev
+                  <a href="mailto:jorch.rl@gmail.com" className="text-lg hover:underline">
+                    jorch.rl@gmail.com
                   </a>
                 </div>
                 
                 <div className="border border-black/20 dark:border-white/20 p-6">
                   <h3 className="text-xs uppercase tracking-widest text-black/60 dark:text-white/60 mb-2">Phone</h3>
-                  <a href="tel:+527773369629" className="text-lg hover:underline">
-                    +52 777 336 9629
+                  <a href="tel:+52-4943-7096" className="text-lg hover:underline">
+                    +52 4943 7096
                   </a>
                 </div>
               </div>
