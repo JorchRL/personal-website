@@ -21,6 +21,8 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.1",
     "three": "^0.162.0"
+    ,
+    "resend": "^6.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
