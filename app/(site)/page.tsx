@@ -1,8 +1,9 @@
+'use client'
+
 import Hero from '../sections/Hero'
 import Projects from '../sections/Projects'
 import Contact from '../sections/Contact'
 import Header from '../_components/Header'
-import Footer from '../_components/Footer'
 
 export default function Home() {
   return (
@@ -13,7 +14,6 @@ export default function Home() {
         <Projects />
         <Contact />
       </main>
-      <Footer />
     </>
   )
-} 
+}

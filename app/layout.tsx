@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import { inter, roboto_mono } from './lib/fonts'
+import { ThemeProvider } from './providers/ThemeProvider'
 import './globals.css'
-import CustomCursor from './components/CustomCursor'
-import Tesseract from './components/Tesseract'
-import ShaderEffect from './components/ShaderEffect'
 
 export const metadata: Metadata = {
   title: 'Jorge Romero | Software Developer',
@@ -17,15 +15,28 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${roboto_mono.variable}`}>
-      <body className="antialiased bg-white dark:bg-black text-black dark:text-white">
-        <CustomCursor />
-        <Tesseract />
-        <ShaderEffect />
-        <div className="flex flex-col min-h-screen">
-          {children}
-        </div>
+    <html lang="en" className={`${inter.variable} ${roboto_mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="antialiased bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
+        <ThemeProvider>
+          <div className="flex flex-col min-h-screen">
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   )
-} 
+}

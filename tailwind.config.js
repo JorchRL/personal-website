@@ -14,6 +14,11 @@ module.exports = {
       colors: {
         dark: '#0A0A0A',
         light: '#F5F5F5',
+        accent: {
+          DEFAULT: '#4361EE',
+          light: '#4A70FF',
+          dark: '#3952D1',
+        },
       },
       animation: {
         'spin-slow': 'spin 20s linear infinite',

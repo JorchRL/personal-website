@@ -1,127 +1,162 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useRouter } from 'next/navigation'
-import Ribbon from '../components/Ribbon'
+import { motion, useInView } from 'framer-motion'
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 
-// Sample project data - replace with your actual projects
 const projects = [
   {
     id: 1,
-    title: 'Minimalist E-commerce',
-    slug: 'minimalist-ecommerce',
-    description: 'A clean, elegant online store built with a focus on simplicity and user experience.',
-    image: '/images/projects/minimalist-ecommerce.jpg',
-    tags: ['React', 'NextJS', 'Monochrome Design'],
+    title: 'EdTech Learning Platform',
+    year: '2024',
+    category: 'Full-Stack · Architect',
+    description: 'SAT/AP prep platform at Whiz.Study serving 10K+ students. Rebuilt critical infrastructure, mentor a team of junior devs, and drove performance from failing to 90+ Lighthouse scores.',
+    slug: 'edtech-platform',
   },
   {
     id: 2,
-    title: 'AI Content Studio',
-    slug: 'ai-content-studio',
-    description: 'An AI-powered application that generates content with a sleek, modern interface.',
-    image: '/images/projects/ai-content-studio.jpg',
-    tags: ['React', 'AI', 'Black & White'],
+    title: 'Digital Twins Platform',
+    year: '2024',
+    category: 'Real-Time · 3D',
+    description: 'Interactive digital twins platform enabling real-time multiplayer collaboration—synchronized navigation, spatial annotations, and guided experiences.',
+    slug: 'spatial-collaboration',
   },
   {
     id: 3,
-    title: 'Brutalist Portfolio',
-    slug: 'brutalist-portfolio',
-    description: 'A stark, high-contrast portfolio site with bold typography and minimal color.',
-    image: '/images/projects/brutalist-portfolio.jpg',
-    tags: ['HTML', 'CSS', 'Brutalism'],
+    title: 'Metroidvania Game',
+    year: '2025',
+    category: 'Unreal Engine · Pre-prod',
+    description: 'Dark, atmospheric action game inspired by Hollow Knight and Nine Sols. Currently in pre-production with a small indie team.',
+    slug: 'metroidvania-game',
   },
   {
     id: 4,
-    title: 'Monochrome Dashboard',
-    slug: 'monochrome-dashboard',
-    description: 'A sophisticated admin dashboard with a black and white color scheme and clean typography.',
-    image: '/images/projects/monochrome-dashboard.jpg',
-    tags: ['React', 'Monochrome', 'Dashboard'],
-  },
-  {
-    id: 5,
-    title: 'Typography Magazine',
-    slug: 'typography-magazine',
-    description: 'A digital magazine focusing on beautiful typography and minimalist design principles.',
-    image: '/images/projects/typography-magazine.jpg',
-    tags: ['NextJS', 'Typography', 'Editorial'],
-  },
-  {
-    id: 6,
-    title: 'Architect Showcase',
-    slug: 'architect-showcase',
-    description: 'A portfolio site for an architecture firm with elegant, spacious layouts.',
-    image: '/images/projects/architect-showcase.jpg',
-    tags: ['Three.js', 'Architecture', 'Minimalism'],
+    title: 'Racing Sim Project',
+    year: '2025',
+    category: 'C++ · Learning',
+    description: 'A personal deep-dive into low-level game development—building a racing sim from scratch to truly understand engines, physics, and netcode.',
+    slug: 'racing-simulator',
   },
 ]
 
 export default function Projects() {
-  const router = useRouter()
-  const sectionRef = useRef(null)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
-
-  const openProject = (slug: string) => {
-    // Find the project data
-    const project = projects.find(p => p.slug === slug)
-    if (project) {
-      // Set selected project data
-      setSelectedProject(project)
-      // Set the selected ID to trigger the animation
-      setSelectedId(slug)
-      
-      // After animation, navigate to project page
-      setTimeout(() => {
-        router.push(`/projects/${slug}`)
-      }, 800)
-    }
-  }
+  const [hoveredId, setHoveredId] = useState<number | null>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 })
 
   return (
-    <section
-      id="projects"
+    <section 
       ref={sectionRef}
+      id="projects" 
+      className="py-24 md:py-32 relative"
     >
-      <Ribbon projects={projects} openProject={openProject} />
-
-      <AnimatePresence>
-        {selectedId && selectedProject && (
+      {/* Section header - editorial style */}
+      <div className="container-custom mb-16 md:mb-24">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <motion.div
-            layoutId={`project-${selectedId}`}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
           >
-            <motion.div 
-              className="w-full h-full relative overflow-hidden"
-              initial={{ borderRadius: 16 }}
-              animate={{ borderRadius: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <motion.img
-                src={selectedProject.image}
-                alt={selectedProject.title}
-                className="w-full h-full object-cover"
-                initial={{ scale: 1.2, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              />
-              
-              <div className="absolute inset-0 opacity-0">
-                <div className="container mx-auto px-8 pb-16">
-                  <h2 className="text-4xl font-light text-white mb-4">{selectedProject.title}</h2>
-                  <div className="w-16 h-[1px] bg-white/30 mb-6" />
-                  <p className="text-white/70 max-w-xl">{selectedProject.description}</p>
-                </div>
-              </div>
-            </motion.div>
+            <span className="text-sm font-mono text-black/50 dark:text-white/50 mb-2 block">
+              Selected Work
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-black dark:text-white">
+              Projects
+              <span className="text-accent">.</span>
+            </h2>
           </motion.div>
-        )}
-      </AnimatePresence>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-black/60 dark:text-white/60 max-w-sm text-lg"
+          >
+            From production platforms to passion projects. Each one taught me something new.
+          </motion.p>
+        </div>
+      </div>
 
+      {/* Projects list - editorial table style */}
+      <div className="container-custom">
+        <div className="border-t border-black/10 dark:border-white/10">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+            >
+              <Link
+                href={`/projects/${project.slug}`}
+                className="group block"
+                onMouseEnter={() => setHoveredId(project.id)}
+                onMouseLeave={() => setHoveredId(null)}
+              >
+                <div className="relative py-6 md:py-8 border-b border-black/10 dark:border-white/10 transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02]">
+                  <div className="grid grid-cols-12 gap-4 items-center">
+                    {/* Number */}
+                    <div className="col-span-1 hidden md:block">
+                      <span className="text-sm font-mono text-black/30 dark:text-white/30">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <div className="col-span-12 md:col-span-5">
+                      <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white group-hover:text-accent transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm text-black/50 dark:text-white/50 mt-1 md:hidden">
+                        {project.category} · {project.year}
+                      </p>
+                    </div>
+
+                    {/* Category */}
+                    <div className="col-span-3 hidden md:block">
+                      <span className="text-sm text-black/50 dark:text-white/50">
+                        {project.category}
+                      </span>
+                    </div>
+
+                    {/* Year */}
+                    <div className="col-span-2 hidden md:block">
+                      <span className="text-sm font-mono text-black/50 dark:text-white/50">
+                        {project.year}
+                      </span>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="col-span-1 hidden md:flex justify-end">
+                      <motion.div
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={hoveredId === project.id ? { x: 0, opacity: 1 } : { x: -10, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ArrowUpRight className="w-6 h-6 text-accent" />
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Hover description */}
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={hoveredId === project.id ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="pt-4 text-black/60 dark:text-white/60 max-w-xl md:ml-[8.33%]">
+                      {project.description}
+                    </p>
+                  </motion.div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   )
-} 
+}

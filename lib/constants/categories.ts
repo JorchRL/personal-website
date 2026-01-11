@@ -1,0 +1,42 @@
+export const CATEGORIES = [
+  {
+    name: 'Technology',
+    slug: 'tech',
+    description: 'Posts about programming, frameworks, and tools',
+    icon: '💻',
+    color: '#4361EE',
+    order_index: 1,
+  },
+  {
+    name: 'Creative',
+    slug: 'creative',
+    description: 'Creative experiments and design explorations',
+    icon: '🎨',
+    color: '#F72585',
+    order_index: 2,
+  },
+  {
+    name: 'Games',
+    slug: 'games',
+    description: 'Game development and interactive experiences',
+    icon: '🎮',
+    color: '#4CC9F0',
+    order_index: 3,
+  },
+  {
+    name: 'Tutorials',
+    slug: 'tutorials',
+    description: 'Step-by-step guides and tutorials',
+    icon: '📚',
+    color: '#7209B7',
+    order_index: 4,
+  },
+  {
+    name: 'Thoughts',
+    slug: 'thoughts',
+    description: 'Opinions, ideas, and reflections',
+    icon: '💡',
+    color: '#FFB703',
+    order_index: 5,
+  },
+] as const
