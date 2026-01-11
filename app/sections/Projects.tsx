@@ -9,7 +9,7 @@ const projects = [
   {
     id: 1,
     title: 'EdTech Learning Platform',
-    year: '2024',
+    year: '2025',
     category: 'Full-Stack · Architect',
     description: 'SAT/AP prep platform at Whiz.Study serving 10K+ students. Rebuilt critical infrastructure, mentor a team of junior devs, and drove performance from failing to 90+ Lighthouse scores.',
     slug: 'edtech-platform',
@@ -17,7 +17,7 @@ const projects = [
   {
     id: 2,
     title: 'Digital Twins Platform',
-    year: '2024',
+    year: '2023',
     category: 'Real-Time · 3D',
     description: 'Interactive digital twins platform enabling real-time multiplayer collaboration—synchronized navigation, spatial annotations, and guided experiences.',
     slug: 'spatial-collaboration',
@@ -25,7 +25,7 @@ const projects = [
   {
     id: 3,
     title: 'Metroidvania Game',
-    year: '2025',
+    year: '2025–26',
     category: 'Unreal Engine · Pre-prod',
     description: 'Dark, atmospheric action game inspired by Hollow Knight and Nine Sols. Currently in pre-production with a small indie team.',
     slug: 'metroidvania-game',
@@ -33,7 +33,7 @@ const projects = [
   {
     id: 4,
     title: 'Racing Sim Project',
-    year: '2025',
+    year: '2025–26',
     category: 'C++ · Learning',
     description: 'A personal deep-dive into low-level game development—building a racing sim from scratch to truly understand engines, physics, and netcode.',
     slug: 'racing-simulator',
