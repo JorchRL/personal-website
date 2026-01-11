@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
-import { ContactFormSelector } from '../components/contact/ContactFormSelector'
-import { ArrowUpRight, ChevronDown, Github, Linkedin, Twitter, Mail } from 'lucide-react'
+import { ArrowUpRight, Github, Linkedin, Twitter, Mail } from 'lucide-react'
 
 const socialLinks = [
   { name: 'GitHub', href: 'https://github.com/jorchrl', icon: Github },
@@ -19,20 +18,9 @@ const navLinks = [
 ]
 
 export default function Contact() {
-  const [isExpanded, setIsExpanded] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 })
   const currentYear = new Date().getFullYear()
-
-  // Listen for unfold event (for programmatic triggers)
-  useEffect(() => {
-    const handleUnfold = () => {
-      setIsExpanded(true)
-    }
-
-    window.addEventListener('unfoldContact', handleUnfold)
-    return () => window.removeEventListener('unfoldContact', handleUnfold)
-  }, [])
 
   return (
     <section 
@@ -65,84 +53,31 @@ export default function Contact() {
           </p>
         </motion.div>
 
-        {/* Expandable Contact Form */}
-        <AnimatePresence mode="wait">
-          {!isExpanded ? (
+        {/* Email CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-24"
+        >
+          <a 
+            href="mailto:jorch.rl@gmail.com"
+            className="group inline-flex items-center gap-4"
+          >
+            <span className="text-xl md:text-2xl text-white group-hover:text-accent transition-colors">
+              Send me an email
+            </span>
             <motion.div
-              key="collapsed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="mb-24"
+              whileHover={{ scale: 1.1 }}
+              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/10 transition-colors"
             >
-              <motion.button
-                onClick={() => setIsExpanded(true)}
-                className="group inline-flex items-center gap-4"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span className="text-xl md:text-2xl text-white group-hover:text-accent transition-colors">
-                  Start a conversation
-                </span>
-                <motion.div
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.5 }}
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-accent transition-colors"
-                >
-                  <ChevronDown className="w-5 h-5 text-white/60 group-hover:text-accent transition-colors" />
-                </motion.div>
-              </motion.button>
+              <ArrowUpRight className="w-5 h-5 text-white/60 group-hover:text-accent transition-colors" />
             </motion.div>
-          ) : (
-            <motion.div
-              key="expanded"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-24"
-            >
-              {/* Form Selector */}
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="max-w-4xl mb-12"
-              >
-                <ContactFormSelector />
-              </motion.div>
-
-              {/* Direct email option */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex flex-col md:flex-row md:items-center gap-4 mb-8"
-              >
-                <span className="text-white/40">Or email directly:</span>
-                <a 
-                  href="mailto:jorch.rl@gmail.com"
-                  className="group inline-flex items-center gap-2 text-xl font-medium text-white hover:text-accent transition-colors"
-                >
-                  jorch.rl@gmail.com
-                  <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                </a>
-              </motion.div>
-
-              {/* Collapse button */}
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                onClick={() => setIsExpanded(false)}
-                className="text-sm text-white/30 hover:text-white/60 transition-colors"
-              >
-                Collapse
-              </motion.button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          </a>
+          <p className="mt-4 text-white/40">
+            jorch.rl@gmail.com
+          </p>
+        </motion.div>
 
         {/* Footer Info Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-12 border-t border-white/10">
