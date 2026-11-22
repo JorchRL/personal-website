@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="t">
+<title id="t">The Lone Wander's layers: Regions (the places) depend on Simulation (the running scene: the wanderer, the camera, the UI), which depends on World (the truth: facts in, state out, no nodes); all three may use the Host, which owns the scene slot, the UI stack, pause, saves and named timers, with pause derived from the stack.</title>
+<text x="48" y="150" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">LAYERS</text>
+<text x="48" y="184" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">one way</text>
+<text x="48" y="352" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#464b52" text-anchor="start">may use</text>
+<line x1="155.10000000000002" y1="345" x2="286" y2="345" stroke="#b9bec2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="48" y="470" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">HOST</text>
+<text x="48" y="504" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">the platform</text>
+<rect x="300" y="70" width="246.66666666666666" height="210" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="320" y="130" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="38" font-weight="800" fill="#0b0c0e" text-anchor="start">Regions</text>
+<text x="320" y="182" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">the places,</text>
+<text x="320" y="208" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">one per region</text>
+<line x1="550.6666666666666" y1="175" x2="586.6666666666666" y2="175" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M584.6666666666666 184 L598.6666666666666 175 L584.6666666666666 166 Z" fill="#ff3f0f"/>
+<line x1="423.3333333333333" y1="282" x2="423.3333333333333" y2="386" stroke="#464b52" stroke-width="2"/>
+<path d="M414.3333333333333 384 L423.3333333333333 398 L432.3333333333333 384 Z" fill="#464b52"/>
+<rect x="602.6666666666666" y="70" width="246.66666666666666" height="210" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="622.6666666666666" y="130" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="38" font-weight="800" fill="#0b0c0e" text-anchor="start">Simulation</text>
+<text x="622.6666666666666" y="182" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">the running</text>
+<text x="622.6666666666666" y="208" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">scene: wanderer,</text>
+<text x="622.6666666666666" y="234" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">camera, UI</text>
+<line x1="853.3333333333333" y1="175" x2="889.3333333333333" y2="175" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M887.3333333333333 184 L901.3333333333333 175 L887.3333333333333 166 Z" fill="#ff3f0f"/>
+<line x1="726" y1="282" x2="726" y2="386" stroke="#464b52" stroke-width="2"/>
+<path d="M717 384 L726 398 L735 384 Z" fill="#464b52"/>
+<rect x="905.3333333333333" y="70" width="246.66666666666666" height="210" fill="#0b0c0e" stroke="#0b0c0e" stroke-width="2"/>
+<text x="925.3333333333333" y="130" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="38" font-weight="800" fill="#eef1f2" text-anchor="start">World</text>
+<text x="925.3333333333333" y="182" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#c3c8cc" text-anchor="start">the truth: facts</text>
+<text x="925.3333333333333" y="208" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#c3c8cc" text-anchor="start">in, state out,</text>
+<text x="925.3333333333333" y="234" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#c3c8cc" text-anchor="start">no nodes</text>
+<line x1="1028.6666666666665" y1="282" x2="1028.6666666666665" y2="386" stroke="#464b52" stroke-width="2"/>
+<path d="M1019.6666666666665 384 L1028.6666666666665 398 L1037.6666666666665 384 Z" fill="#464b52"/>
+<rect x="300" y="400" width="852" height="170" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="328" y="462" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="46" font-weight="800" fill="#0b0c0e" text-anchor="start">Host</text>
+<text x="328" y="506" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="21" font-weight="400" fill="#464b52" text-anchor="start">scene slot · UI stack · pause · saves · named timers</text>
+<text x="328" y="536" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="21" font-weight="400" fill="#464b52" text-anchor="start">a screen is open, so the game is paused</text>
+</svg>

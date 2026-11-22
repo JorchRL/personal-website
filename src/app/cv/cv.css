@@ -1,0 +1,541 @@
+/* /cv: the CV on the sheet, and printed (public/cv.pdf, scripts/cv-pdf.mjs).
+   Scoped under .cv; the print rules also hide the running head and the
+   title block of the page that holds it. */
+
+.cv .cv-intro {
+  margin-top: 30px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  row-gap: 28px;
+  align-items: start;
+}
+
+.cv .cv-lead {
+  grid-column: 1 / span 7;
+}
+
+.cv .cv-title {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.cv .cv-status {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.cv .cv-summary {
+  margin: 10px 0 0;
+  max-width: 34em;
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.25;
+  font-weight: 540;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+.cv .cv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 26px 0 0;
+}
+
+.cv .cv-contact {
+  grid-column: 9 / span 4;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.cv .cv-contact > div {
+  display: grid;
+  grid-template-columns: 6.5em minmax(0, 1fr);
+  gap: 10px;
+  padding: 7px 0 6px;
+  border-bottom: 1px solid var(--hair);
+  font-size: 12.5px;
+}
+
+.cv .cv-contact dt {
+  color: var(--ink-3);
+}
+
+.cv .cv-contact dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.cv .cv-contact a:hover,
+.cv .cv-pdf-link:hover,
+.cv .cv-entry a:hover {
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+/* Print-only punctuation (Sep in page.tsx). */
+.cv .cv-sep {
+  display: none;
+}
+
+.cv .cv-sec {
+  margin-top: 72px;
+}
+
+/* A CV's sections are many and short: their heads are set smaller than the
+   home document's. */
+.cv .cv-sec .sec-head h2 {
+  font-size: clamp(36px, 3.6vw, 54px);
+  line-height: 0.9;
+}
+
+.cv .cv-entries {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.cv .cv-entry {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 10px;
+  align-items: baseline;
+  padding: 18px 0 20px;
+  border-bottom: 1px solid var(--hair);
+}
+
+/* In the page's order the title comes first, then the dates (what a reader
+   and a parser look for, in that order); on screen the dates sit at left.
+   They hold no link, so focus order is unchanged. */
+.cv .cv-dates {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cv .cv-entry h3 {
+  grid-column: 3 / span 4;
+  grid-row: 1;
+  margin: 0;
+}
+
+.cv .cv-role {
+  display: block;
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 740;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.cv .cv-at {
+  display: block;
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.cv .cv-entry .cv-outcomes {
+  grid-column: 7 / span 6;
+}
+
+.cv .cv-outcomes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.cv .cv-outcomes li {
+  position: relative;
+  padding-left: 1.1em;
+}
+
+.cv .cv-outcomes li + li {
+  margin-top: 8px;
+}
+
+.cv .cv-outcomes li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--ink-3);
+}
+
+.cv .cv-pairs {
+  margin: 28px 0 0;
+  border-top: 1px solid var(--rule);
+}
+
+.cv .cv-pairs > div {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: 12px 0 11px;
+  border-bottom: 1px solid var(--hair);
+  align-items: baseline;
+}
+
+.cv .cv-pairs dt {
+  grid-column: 1 / span 2;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.cv .cv-pairs dd {
+  grid-column: 3 / span 8;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.cv .cv-rev {
+  margin: 56px 0 0;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+@media (max-width: 1100px) {
+  .cv .cv-lead {
+    grid-column: 1 / span 12;
+  }
+
+  .cv .cv-contact {
+    grid-column: 1 / span 7;
+  }
+
+  .cv .cv-entry h3 {
+    grid-column: 3 / span 10;
+  }
+
+  .cv .cv-entry .cv-outcomes {
+    grid-column: 3 / span 10;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .cv .cv-lead,
+  .cv .cv-contact,
+  .cv .cv-dates,
+  .cv .cv-entry h3,
+  .cv .cv-entry .cv-outcomes,
+  .cv .cv-pairs dt,
+  .cv .cv-pairs dd {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .cv .cv-sec {
+    margin-top: 64px;
+  }
+
+  .cv .cv-pairs dd {
+    margin-top: 4px;
+  }
+}
+
+/* ---------- printed: public/cv.pdf ----------
+   One column, black on white, real text. The name and contact details are
+   in the body, never in a running header. TODO marks stay visible.
+   The text is set in Arial: Chromium writes the site's variable Schibsted
+   Grotesk into a PDF as Type 3 glyphs, and even a static cut of it comes
+   out with gaps that text extractors (and so applicant tracking systems)
+   read as spaces ("T ech lead"). Only the name keeps the site's face, from
+   a static cut, which Chromium embeds as TrueType. */
+@font-face {
+  font-family: "Schibsted Print";
+  src: url("../../seo/fonts/SchibstedGrotesk-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@page {
+  size: Letter;
+  margin: 15mm 17mm 15mm;
+}
+
+@media print {
+  html,
+  body,
+  body:has(.cv) .page {
+    background: #fff;
+  }
+
+  .cv {
+    --sans: Arial, "Liberation Sans", Helvetica, sans-serif;
+    font-family: var(--sans);
+  }
+
+  .cv .page-head h1.page-title {
+    font-family: "Schibsted Print", Arial, sans-serif;
+    font-weight: 800;
+  }
+
+  .cv .mono,
+  .cv .cv-contact,
+  .cv .cv-dates {
+    letter-spacing: 0;
+    font-feature-settings: normal;
+  }
+
+  .cv .sec-head {
+    break-after: avoid;
+  }
+
+  .cv .cv-pairs > div,
+  .cv .cv-outcomes li {
+    break-inside: avoid;
+  }
+
+  body:has(.cv) {
+    font-size: 10pt;
+    line-height: 1.38;
+    color: #000;
+  }
+
+  body:has(.cv) .page {
+    display: block;
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+  }
+
+  body:has(.cv) .page::before,
+  body:has(.cv) .skip,
+  body:has(.cv) .head,
+  body:has(.cv) .tblock,
+  .cv .page-head .meta,
+  .cv .cv-actions,
+  .cv .sec-head .no,
+  .cv .sec-head .more {
+    display: none;
+  }
+
+  .cv a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cv .grid,
+  .cv .cv-entry,
+  .cv .cv-pairs > div,
+  .cv .cv-contact > div {
+    display: block;
+  }
+
+  .cv .page-head {
+    padding: 0;
+  }
+
+  .cv .page-head h1.page-title {
+    margin: 0;
+    font-size: 24pt !important;
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+
+  .cv .cv-intro {
+    margin-top: 6pt;
+    padding: 0;
+    border: 0;
+  }
+
+  .cv .cv-title {
+    font-family: var(--sans);
+    font-size: 12pt;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .cv .cv-status {
+    margin-top: 2pt;
+    font-family: var(--sans);
+    font-size: 10pt;
+  }
+
+  .cv .cv-status::before {
+    display: none;
+  }
+
+  .cv .cv-summary {
+    max-width: none;
+    margin-top: 4pt;
+    font-size: 10pt;
+    line-height: 1.4;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  /* Contact: one line of plain text, label and value. */
+  .cv .cv-contact {
+    margin-top: 6pt;
+    border: 0;
+    font-family: var(--sans);
+  }
+
+  .cv .cv-contact > div {
+    display: inline;
+    padding: 0;
+    border: 0;
+    font-size: 9.5pt;
+  }
+
+  .cv .cv-sep {
+    display: inline;
+  }
+
+  .cv .cv-contact .cv-sep {
+    color: #555;
+  }
+
+  /* One space between a label and its value, and after each separator. */
+  .cv .cv-contact dt::after,
+  .cv .cv-contact dd::after,
+  .cv .cv-pairs dt::after {
+    content: " ";
+  }
+
+  .cv .cv-contact dt,
+  .cv .cv-contact dd {
+    display: inline;
+  }
+
+  .cv .cv-contact dt {
+    color: #555;
+  }
+
+
+  .cv .cv-sec,
+  .cv .sec {
+    margin-top: 12pt;
+    border-top: 1.2pt solid #000;
+  }
+
+  .cv .sec-head {
+    padding-top: 3pt;
+  }
+
+  .cv .sec-head h2,
+  .cv .cv-sec .sec-head h2 {
+    font-size: 10pt;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cv .cv-entries,
+  .cv .cv-pairs {
+    margin-top: 4pt;
+    border: 0;
+  }
+
+  .cv .cv-entry {
+    padding: 0 0 7pt;
+    border: 0;
+    break-inside: avoid;
+  }
+
+  .cv .cv-entry + .cv-entry {
+    padding-top: 2pt;
+  }
+
+  .cv .cv-role {
+    display: inline;
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .cv .cv-at {
+    display: inline;
+    margin: 0;
+    font-size: 11pt;
+    font-weight: 400;
+  }
+
+
+  .cv .cv-dates {
+    font-family: var(--sans);
+    font-size: 9.5pt;
+    color: #333;
+  }
+
+  .cv .cv-outcomes {
+    margin-top: 2pt;
+    font-size: 10pt;
+    line-height: 1.38;
+    color: #000;
+  }
+
+  .cv .cv-outcomes li + li {
+    margin-top: 1.5pt;
+  }
+
+  /* The dash is set inline, in the text's own run: an absolutely placed
+     marker is drawn after the text it belongs to, and extractors read it
+     detached ("–" on a line of its own, or every dash after every line). */
+  .cv .cv-outcomes li {
+    position: static;
+    padding-left: 0.85em;
+    text-indent: -0.85em;
+  }
+
+  .cv .cv-outcomes li::before {
+    position: static;
+    content: "– ";
+    color: #000;
+  }
+
+  .cv .cv-pairs > div {
+    padding: 1.5pt 0;
+    border: 0;
+  }
+
+  .cv .cv-pairs dt,
+  .cv .cv-pairs dd {
+    display: inline;
+    font-family: var(--sans);
+    font-size: 10pt;
+    color: #000;
+  }
+
+  .cv .cv-pairs dt {
+    font-weight: 700;
+  }
+
+
+  .cv .cv-pairs .status::before {
+    display: none;
+  }
+
+  .cv .cv-rev {
+    margin-top: 14pt;
+    font-size: 8pt;
+    color: #555;
+  }
+
+  /* No padding: a gap after a mark reads as a space before the next
+     character ("there ."). */
+  .cv mark.todo {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 0;
+    font-size: 9pt;
+  }
+}

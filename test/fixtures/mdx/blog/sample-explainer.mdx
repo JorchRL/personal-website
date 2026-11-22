@@ -1,0 +1,48 @@
+---
+title: "A sample explainer"
+description: "A test post that exercises every part of an MDX post. It is never published."
+date: 2026-11-20
+tags: [test, waves]
+---
+
+This post exists only for the tests. It uses each piece an MDX post can hold.
+
+## Waves on a plate
+
+A wave on a plate obeys $$\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u$$, written inline.
+
+$$
+u_{t+1} = 2u_t - u_{t-1} + c^2 \Delta t^2 \, \nabla^2 u_t
+$$
+
+<Demo caption="Strike the plate to start a ring of waves.">
+  ![A plate at rest](/blog/webgl-or-how-to-draw-a-single-point-the-hard-way/20f6f3ce-c936-445e-bbde-26365a079ae0.png)
+</Demo>
+
+### The step in code
+
+```ts
+function step(now: number, before: number, laplacian: number): number {
+  return 2 * now - before + 0.25 * laplacian;
+}
+```
+
+Use `--reload` to start over, and write a brace as \{ or {"{"} and a less-than as \< in text.
+
+<Aside>
+  A side note with **bold** text and a [link](/blog).
+
+  TODO(jorge): a sentence still to write.
+</Aside>
+
+## A picture
+
+![The plate's first frame](/blog/webgl-or-how-to-draw-a-single-point-the-hard-way/20f6f3ce-c936-445e-bbde-26365a079ae0.png)
+
+<Figure src="/blog/webgl-or-how-to-draw-a-single-point-the-hard-way/20f6f3ce-c936-445e-bbde-26365a079ae0.png" alt="Waves crossing the plate in a beam." caption="The tank's first frame." />
+
+[![](/blog/webgl-or-how-to-draw-a-single-point-the-hard-way/20f6f3ce-c936-445e-bbde-26365a079ae0.png)](https://www.buymeacoffee.com/)
+
+A claim with a footnote.[^1]
+
+[^1]: The footnote's text.

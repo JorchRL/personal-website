@@ -1,0 +1,107 @@
+---
+title: Building it by hand, with AI writing the tutorials
+description: How I'm learning C++ and Godot by building real projects by hand from step-by-step briefs an AI writes for me, and what my learning logs show so far.
+date: 2026-11-21
+draft: true
+tags:
+  - learning
+  - AI
+  - C++
+  - Godot
+---
+
+*First draft written with AI from Jorge's notes, for him to rewrite.*
+
+I have two ways of failing at learning something new in code.
+
+The first is doing it alone. It's slow, and I find it hard to stay with. TODO(jorge): one concrete example of a project that stalled this way.
+
+The second is letting the AI write everything. That one is fast, and the thing even works. But I don't get any better at the skill I wanted, and I lose my grip on the code.
+
+So I've been trying something in between. Agents do the fast, messy exploring. I build the real project by hand, from briefs that read like a good tutorial. And the help is supposed to fade as I get better.
+
+I'm practising it on two projects: Plain Engine, a game engine I'm writing by hand in C++, loosely following Handmade Hero, and The Lone Wander, a small 3D Zelda-like in Godot. The way I run it now dates from the end of October 2026. TODO(jorge): why you started, in a sentence or two.
+
+## The loop
+
+Every piece of work goes around the same loop.
+
+<Demo caption="The loop, and who does what at each stage.">
+  <TheLoop />
+</Demo>
+
+First we talk about what it is, what I type by hand and what agents can write. Nothing gets built before that's settled.
+
+If an idea is uncertain, agents build a quick prototype in a side folder, so it can be tried before anyone types it properly. Plain Engine skips this step. Its milestones follow Handmade Hero instead. The Lone Wander's briefs are checked against an answer key the AI builds first.
+
+Then the settled design becomes a brief. One file, step by step: the problem, the decision, the step in words, and the exact code to type. Each brief is built once in a scratch copy first, so the bugs I hit are mine and not the tutorial's.
+
+Then I build it. By hand. I type every line, run it after every step, and ask when I'm stuck.
+
+Then a review, and it's deliberately narrow: only bugs that change behaviour. No style notes. What arrived right and what needed a hint goes into a learning log, with dates. That log decides what the next brief looks like.
+
+Here's one real step. In Plain Engine the engine and the game have to agree on the signature of `game_update`. In the old code they didn't, and the program crashed with exit code 139. The fix, borrowed from Handmade Hero, is a macro that writes the signature down once, so the two sides can't drift apart.
+
+I typed it, the structure was right, and I still missed the semicolon after `GAME_UPDATE(game_update)`. The log files it with the other slips of that day as "structural, not conceptual".
+
+The more useful catch was about the brief, not about me. At step M1.2 the brief gave me the steps in plain words only, and I got stuck on the C++ syntax. I passed the macro the whole parameter list instead of just the name. So the briefs changed the same day: every step now gives the words first and then the exact code to type.
+
+## The scaffold comes down
+
+The idea has a name I didn't invent: scaffolding in the zone of proximal development, from Vygotsky, and from Wood, Bruner and Ross in 1976. Each step should sit just past what I could do alone, with support where I'm new and less where I'm not. And the support is meant to come down.
+
+Plain Engine's log has three levels for that.
+
+<Demo caption="The same step at the three levels. The bars are what the brief gives me; dashed ones are gone.">
+  <ScaffoldComesDown />
+</Demo>
+
+At guided, the brief gives me the goal, the contract, each step in words and the code to type. At challenge, I get the goal, the contract and the check, plus a few hints, and the steps are mine to work out. At contracts, we design together, the AI implements, and I review.
+
+To be honest about it: I'm at the first one. Plain Engine has been at guided since its first milestone, and its list of constructs that have faded to words only says "none yet".
+
+The Lone Wander got a bit further. Its map screen was built at the challenge level, and one construct (reading an input action in `_unhandled_input`) is now words only. Its log also records me saying, on 5 November, that I can "almost know by hand" when to use `1.0 - exp(-rate * delta)`.
+
+## The dial
+
+Not everything is worth typing by hand. Core logic, the seams of the architecture, and anything new that everything else leans on, I type, because those are the parts I'll debug later. Bulk and repetition go to agents: styles for dozens of components, data tables, boilerplate, tooling, generated assets. The Lone Wander's 3D models, for example, come out of an exporter, and those files belong to the agents.
+
+So each brief has a dial.
+
+<Demo caption="Who types and who reviews at each setting.">
+  <TheDial />
+</Demo>
+
+By hand is the default. "Build this one for me" means an agent builds that brief in my project and then walks me through the code with the brief open. A whole project can also switch to `implement: agent`, where agents implement and I stay in the loop through the discussion and a walkthrough of each pass. TODO(jorge): a third setting, go deep, is named in my notes but not described; say what it means or cut it.
+
+Both of my projects are by hand.
+
+## What the logs show so far
+
+The logs are written after every review, with dates, and they're meant to be honest. Here's what they say.
+
+In Plain Engine, the first two milestones were both done on 31 October: memory the engine owns, a hot reload that keeps the game's state and survives a broken build, a raylib window, and a gradient drawn into a buffer the engine owns. The bugs that day were placement, not concept. A missing semicolon. A loop step one brace too deep. Draw calls after `EndDrawing`. A deleted brace. The third milestone, input, is written and waiting for me.
+
+The Lone Wander's log has more slips, and some repeats. Untyped variables kept showing up, four of them by 30 October. Twice I called a part done without checking each rule of the brief. The second time, it was because the half I could see worked. On the other hand, the journal milestone arrived with no bugs at all.
+
+## What changed for me
+
+This is the part only I can answer.
+
+TODO(jorge): compared with coding alone, what changed for you?
+
+TODO(jorge): compared with letting the AI write everything, what changed for you?
+
+TODO(jorge): how it feels to sit down to work now, in a sentence or two.
+
+## Where it falls short
+
+It's young. The way I run it now only dates from the end of October.
+
+Steps in words only stall me. It happened in both projects, so now a step gets words only for a shape I've already typed before.
+
+Too much brief is just as bad. In The Lone Wander the tutorial briefs got so heavy that I stopped at one brief (T3) for five days while agents produced work around me. On 14 November the briefs changed to something lighter: written like pull requests, with no numbered micro-steps and no quizzes.
+
+Letting an agent build each brief for me to merge didn't work either. I tried it on T3 too, and ended up reviewing code I hadn't made.
+
+And I haven't yet gone all the way down the scaffold on any one skill. That's the promise of the method, and so far it's a promise.

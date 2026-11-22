@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="t">
+<title id="t">Whiz.Study's exam engine: plugins above, the runtime in the middle, exams and lessons below as data</title>
+<text x="48" y="108" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start" letter-spacing="1">PLUGINS</text>
+<text x="48" y="142" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">code</text>
+<text x="48" y="296" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start" letter-spacing="1">RUNTIME</text>
+<text x="48" y="330" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">one engine</text>
+<text x="48" y="500" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start" letter-spacing="1">DLCs</text>
+<text x="48" y="534" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">data</text>
+<text x="48" y="212" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#464b52" text-anchor="start">plugin API</text>
+<line x1="195" y1="205" x2="286" y2="205" stroke="#b9bec2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="48" y="410" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#464b52" text-anchor="start">DLC contract</text>
+<line x1="221.60000000000002" y1="403" x2="286" y2="403" stroke="#b9bec2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<rect x="300" y="64" width="330" height="104" fill="none" stroke="#0b0c0e" stroke-width="2.5"/>
+<text x="324" y="110" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="38" font-weight="700" fill="#0b0c0e" text-anchor="start">AI tutor</text>
+<text x="324" y="148" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="20" font-weight="400" fill="#464b52" text-anchor="start">tool calls on the exam</text>
+<rect x="660" y="64" width="250" height="104" fill="none" stroke="#5b6169" stroke-width="1.5" stroke-dasharray="8 7"/>
+<text x="684" y="124" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">next plugin</text>
+<line x1="465" y1="168" x2="465" y2="226" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M456 224 L465 238 L474 224 Z" fill="#ff3f0f"/>
+<line x1="785" y1="168" x2="785" y2="226" stroke="#5b6169" stroke-width="1.5"/>
+<path d="M776 224 L785 238 L794 224 Z" fill="#5b6169"/>
+<rect x="300" y="240" width="852" height="124" fill="#0b0c0e"/>
+<text x="328" y="302" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="50" font-weight="800" fill="#eef1f2" text-anchor="start">Exam engine</text>
+<text x="328" y="342" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#c3c8cc" text-anchor="start">a generic runtime · each exam is a level</text>
+<line x1="378" y1="440" x2="378" y2="378" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M369 380 L378 366 L387 380 Z" fill="#ff3f0f"/>
+<rect x="300" y="440" width="156" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<line x1="378" y1="470" x2="348" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="378" y1="470" x2="408" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="348" y1="502" x2="334" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="348" y1="502" x2="362" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="408" y1="502" x2="394" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="408" y1="502" x2="422" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<circle cx="378" cy="470" r="6" fill="#0b0c0e"/>
+<circle cx="348" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="408" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="334" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="362" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="394" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="422" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<text x="378" y="574" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#0b0c0e" text-anchor="middle">SAT</text>
+<line x1="552" y1="440" x2="552" y2="378" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M543 380 L552 366 L561 380 Z" fill="#ff3f0f"/>
+<rect x="474" y="440" width="156" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<line x1="552" y1="470" x2="522" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="552" y1="470" x2="582" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="522" y1="502" x2="508" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="522" y1="502" x2="536" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="582" y1="502" x2="568" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="582" y1="502" x2="596" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<circle cx="552" cy="470" r="6" fill="#0b0c0e"/>
+<circle cx="522" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="582" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="508" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="536" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="568" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="596" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<text x="552" y="574" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#0b0c0e" text-anchor="middle">PSAT</text>
+<line x1="726" y1="440" x2="726" y2="378" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M717 380 L726 366 L735 380 Z" fill="#ff3f0f"/>
+<rect x="648" y="440" width="156" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<line x1="726" y1="470" x2="696" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="726" y1="470" x2="756" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="696" y1="502" x2="682" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="696" y1="502" x2="710" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="756" y1="502" x2="742" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="756" y1="502" x2="770" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<circle cx="726" cy="470" r="6" fill="#0b0c0e"/>
+<circle cx="696" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="756" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="682" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="710" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="742" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="770" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<text x="726" y="574" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#0b0c0e" text-anchor="middle">APs</text>
+<line x1="900" y1="440" x2="900" y2="378" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M891 380 L900 366 L909 380 Z" fill="#ff3f0f"/>
+<rect x="822" y="440" width="156" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<line x1="900" y1="470" x2="870" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="900" y1="470" x2="930" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="870" y1="502" x2="856" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="870" y1="502" x2="884" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="930" y1="502" x2="916" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="930" y1="502" x2="944" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<circle cx="900" cy="470" r="6" fill="#0b0c0e"/>
+<circle cx="870" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="930" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="856" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="884" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="916" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="944" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<text x="900" y="574" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#0b0c0e" text-anchor="middle">MCAT</text>
+<line x1="1074" y1="440" x2="1074" y2="378" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M1065 380 L1074 366 L1083 380 Z" fill="#ff3f0f"/>
+<rect x="996" y="440" width="156" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<line x1="1074" y1="470" x2="1044" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="1074" y1="470" x2="1104" y2="502" stroke="#464b52" stroke-width="1.5"/>
+<line x1="1044" y1="502" x2="1030" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="1044" y1="502" x2="1058" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="1104" y1="502" x2="1090" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<line x1="1104" y1="502" x2="1118" y2="530" stroke="#464b52" stroke-width="1.5"/>
+<circle cx="1074" cy="470" r="6" fill="#0b0c0e"/>
+<circle cx="1044" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="1104" cy="502" r="5" fill="#0b0c0e"/>
+<circle cx="1030" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="1058" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="1090" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="1118" cy="530" r="4" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<text x="1074" y="574" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#0b0c0e" text-anchor="middle">Lessons</text>
+</svg>

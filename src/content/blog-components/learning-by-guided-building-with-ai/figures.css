@@ -1,0 +1,812 @@
+/* ------------------------------------------------------------------
+   The three diagrams of "Learning by guided building with AI"
+   (views.tsx). Imported by Faces.tsx, so it loads with MDX posts only.
+   Every class starts with gb-. Layout follows each figure's own width
+   (a container), not the window's. The accent marks the one thing that
+   matters in each state: the stage, the slip, where I am, the pointer.
+   ------------------------------------------------------------------ */
+
+@layer components {
+  .prose > .markdown > .mdx-demo:has(.gb) {
+    max-width: min(100%, 60rem);
+  }
+
+  .mdx-demo .frame:has(.gb) {
+    padding: 20px 0 24px;
+    background: var(--paper);
+  }
+
+  .gb {
+    container-type: inline-size;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .gb p {
+    margin: 0;
+  }
+
+  .gb-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .gb :not(pre) > code {
+    font-size: 0.86em;
+  }
+
+  .gb-credit {
+    margin-top: 18px !important;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .gb-n {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-2);
+  }
+
+  /* Who does it: me solid, the AI outlined, both: outlined with my bar. */
+  .gb-chip {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  .gb-chip[data-who="jorge"] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .gb-chip[data-who="both"] {
+    border-left-width: 6px;
+  }
+
+  .gb input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .gb label:has(input:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .gb fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .gb-say {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .gb-say b {
+    font-weight: 720;
+  }
+
+  .gb .gb-says {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gb .gb-says li + li {
+    margin-top: 6px;
+  }
+
+  /* ---------- Fig. 1: the loop ---------- */
+
+  .gb .gb-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: auto 30px;
+    column-gap: 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gb .gb-node-cell {
+    position: relative;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .gb-node-cell + .gb-node-cell::before {
+    content: "→";
+    position: absolute;
+    top: 50%;
+    left: -22px;
+    transform: translateY(-50%);
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .gb-node {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 11px 12px 12px;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+  }
+
+  button.gb-node {
+    cursor: pointer;
+  }
+
+  button.gb-node:hover {
+    background: var(--paper-2);
+  }
+
+  .gb-node-cell:nth-child(2) .gb-node {
+    border-style: dashed;
+  }
+
+  .gb-node-name {
+    font-size: 17px;
+    font-weight: 740;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .gb-optional {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .gb-node-cell[data-on] .gb-node {
+    border: 2px solid var(--accent);
+    padding: 10px 11px 11px;
+  }
+
+  .gb-node-cell[data-on] .gb-n {
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+
+  /* The way back: from Review to Brief, under the track. */
+  .gb .gb-return {
+    position: relative;
+    grid-row: 2;
+    grid-column: 3 / 6;
+    margin: 0 calc((100% - 56px) / 6);
+    border: 1.5px solid var(--ink);
+    border-top: 0;
+  }
+
+  .gb-return::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -6.75px;
+    border: 6px solid transparent;
+    border-top: 0;
+    border-bottom: 9px solid var(--ink);
+  }
+
+  .gb-return span {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    padding: 0 8px;
+    background: var(--paper);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .gb-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 16px 28px;
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 2px solid var(--rule);
+  }
+
+  .gb-detail:not([data-has-example]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gb-detail:not([data-has-example]) .gb-detail-text {
+    max-width: 36rem;
+  }
+
+  .gb-details .gb-detail {
+    margin-top: 0;
+    padding: 14px 0;
+    border-top: 1px solid var(--hair);
+  }
+
+  .gb-details {
+    margin-top: 22px;
+    border-top: 2px solid var(--rule);
+  }
+
+  .gb-details .gb-detail:first-child {
+    border-top: 0;
+  }
+
+  .gb-detail-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    margin-bottom: 6px !important;
+    font-size: 18px;
+    font-weight: 740;
+    letter-spacing: -0.02em;
+  }
+
+  .gb-detail-text > p:not(.gb-detail-head) {
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  .gb .gb-example {
+    margin: 0;
+    padding-left: 12px;
+    border-left: 2px solid var(--ink);
+  }
+
+  .gb-ex-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .gb .gb-example pre {
+    margin: 6px 0 0;
+    padding: 10px 12px;
+    border-top: 1px solid var(--rule);
+    background: var(--paper-2);
+    font-size: 11.5px;
+    line-height: 1.65;
+    overflow-x: auto;
+  }
+
+  .gb-ex-lines {
+    margin-top: 6px;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .gb-ex-lines p + p {
+    margin-top: 3px;
+  }
+
+  .gb-ex-remark {
+    margin-top: 8px !important;
+    font-size: 13.5px;
+    color: var(--ink-2);
+  }
+
+  .gb-mark {
+    padding: 0 1px;
+    background: none;
+    color: inherit;
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  .gb .gb-nav {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .gb-nav button {
+    padding: 7px 12px 6px;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    background: none;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .gb-nav .gb-next {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .gb-nav button:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+
+  .gb-nav button:disabled {
+    border-color: var(--hair);
+    color: var(--ink-3);
+    cursor: default;
+  }
+
+  /* ---------- Fig. 2: the scaffold comes down ---------- */
+
+  .gb-lead {
+    margin-bottom: 14px !important;
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .gb .gb-levels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gb .gb-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 12px;
+    border: 1px solid var(--hair);
+  }
+
+  label.gb-col {
+    cursor: pointer;
+  }
+
+  label.gb-col:not([data-on]):hover {
+    border-color: var(--ink-3);
+  }
+
+  .gb-col[data-on] {
+    border: 2px solid var(--ink);
+    padding: 11px;
+  }
+
+  .gb-col-name {
+    font-size: 20px;
+    font-weight: 760;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .gb-col-status {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .gb-col-status.status {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .gb-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .gb-bar {
+    padding: 4px 8px;
+    border: 1px dashed var(--ink-3);
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: var(--ink-3);
+    text-decoration: line-through;
+    text-decoration-color: var(--ink-3);
+  }
+
+  .gb-bar[data-has] {
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+  }
+
+  .gb-col-who {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+
+  .gb .gb-axis {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 6px;
+    border-top: 1px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-2);
+  }
+
+  .gb-fade > .gb-say {
+    margin-top: 14px;
+  }
+
+  /* ---------- Fig. 3: the dial ---------- */
+
+  .gb-dial-wrap {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    align-items: center;
+    gap: 32px;
+  }
+
+  .gb-dial {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .gb-dial-arc {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.2;
+  }
+
+  .gb-dial-arc.project {
+    stroke-dasharray: 2.5 2.5;
+  }
+
+  .gb-detent path {
+    stroke: var(--ink);
+    stroke-width: 1.2;
+  }
+
+  .gb-detent text {
+    font-family: var(--mono);
+    font-size: 9px;
+    fill: var(--ink-2);
+  }
+
+  .gb-detent[data-on] path {
+    stroke: var(--accent);
+    stroke-width: 2.5;
+  }
+
+  .gb-detent[data-on] text {
+    fill: var(--ink);
+    font-weight: 600;
+  }
+
+  .gb-knob {
+    fill: var(--paper-2);
+    stroke: var(--ink);
+    stroke-width: 1.2;
+  }
+
+  .gb-pointer {
+    transform-box: view-box;
+    transform-origin: 60px 60px;
+    transition: transform 460ms cubic-bezier(0.3, 1.35, 0.5, 1);
+  }
+
+  .gb-pointer path {
+    stroke: var(--ink);
+    stroke-width: 2.5;
+  }
+
+  .gb-pointer circle {
+    fill: var(--accent);
+  }
+
+  .gb-hub {
+    fill: var(--ink);
+  }
+
+  .gb .gb-matrix {
+    display: table;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-variant-numeric: normal;
+  }
+
+  .gb .gb-matrix :is(th, td) {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--hair);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .gb .gb-matrix thead :is(th, td) {
+    padding: 0 4px 8px;
+    border-bottom: 2px solid var(--rule);
+    vertical-align: bottom;
+  }
+
+  .gb .gb-matrix thead th {
+    font-family: var(--sans);
+    font-size: inherit;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink);
+  }
+
+  .gb-set {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 7px 8px;
+  }
+
+  label.gb-set {
+    cursor: pointer;
+  }
+
+  label.gb-set:hover {
+    background: var(--hair);
+  }
+
+  .gb-set-name {
+    font-size: 15px;
+    font-weight: 720;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+
+  .gb-set-scope {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .gb .gb-matrix th[data-on] .gb-set {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .gb .gb-matrix th[data-on] .gb-set-scope {
+    color: var(--paper);
+  }
+
+  .gb .gb-matrix tbody th {
+    padding-left: 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 400;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .gb .gb-matrix td[data-on] {
+    background: var(--paper-2);
+  }
+
+  .gb-matrix .gb-chip {
+    padding: 2px 9px;
+    font-size: 11.5px;
+  }
+
+  .gb-then {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+
+  .gb-blank {
+    display: inline-block;
+    width: 28px;
+    margin-top: 10px;
+    border-top: 1px dotted var(--ink-3);
+  }
+
+  .gb-dialfig > .gb-say {
+    margin-top: 14px;
+  }
+
+  /* ---------- narrower figures ---------- */
+
+  @container (max-width: 700px) {
+    /* The loop runs down the page; the way back runs up its right side. */
+    .gb .gb-track {
+      grid-template-columns: minmax(0, 1fr) 46px;
+      grid-template-rows: none;
+      grid-auto-rows: auto;
+      row-gap: 22px;
+      column-gap: 0;
+    }
+
+    .gb .gb-node-cell {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .gb-node-cell + .gb-node-cell::before {
+      content: "↓";
+      top: -20px;
+      left: 14px;
+      transform: none;
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    .gb-node {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 10px;
+      padding: 9px 12px;
+    }
+
+    .gb-node-cell[data-on] .gb-node {
+      padding: 8px 11px;
+    }
+
+    .gb-node-name {
+      font-size: 16px;
+    }
+
+    .gb .gb-return {
+      grid-column: 2;
+      grid-row: 3 / 6;
+      margin: 20px 14px 20px 0;
+      border: 1.5px solid var(--ink);
+      border-left: 0;
+    }
+
+    .gb-return::before {
+      top: -6.75px;
+      left: -1px;
+      border: 6px solid transparent;
+      border-left: 0;
+      border-right: 9px solid var(--ink);
+      transform: translateX(-100%);
+    }
+
+    .gb-return span {
+      top: 50%;
+      bottom: auto;
+      left: auto;
+      right: 0;
+      transform: translate(50%, -50%) rotate(180deg);
+      padding: 8px 0;
+      writing-mode: vertical-rl;
+    }
+
+    .gb-detail {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .gb .gb-levels {
+      gap: 6px;
+    }
+
+    .gb .gb-col {
+      padding: 8px 7px;
+      gap: 6px;
+    }
+
+    .gb-col[data-on] {
+      padding: 7px 6px;
+    }
+
+    .gb-col-name {
+      font-size: 15.5px;
+    }
+
+    .gb-col-status {
+      font-size: 9.5px;
+      letter-spacing: 0.03em;
+    }
+
+    .gb-bar {
+      padding: 3px 5px;
+      font-size: 11px;
+    }
+
+    .gb-col-who {
+      font-size: 12px;
+    }
+
+    .gb-dial-wrap {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .gb-dial {
+      width: 96px;
+    }
+
+    .gb .gb-matrix thead :is(th, td) {
+      padding: 0 2px 6px;
+    }
+
+    .gb .gb-matrix :is(th, td) {
+      padding: 8px 4px;
+    }
+
+    .gb-set {
+      padding: 6px 5px;
+    }
+
+    .gb-set-name {
+      font-size: 13.5px;
+    }
+
+    .gb-set-scope {
+      font-size: 9px;
+      letter-spacing: 0.03em;
+    }
+
+    .gb .gb-matrix tbody th {
+      font-size: 9.5px;
+      white-space: normal;
+    }
+
+    .gb-matrix .gb-chip {
+      padding: 1px 6px;
+      font-size: 10.5px;
+    }
+
+    .gb-then {
+      font-size: 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gb-pointer {
+      transition: none;
+    }
+  }
+}

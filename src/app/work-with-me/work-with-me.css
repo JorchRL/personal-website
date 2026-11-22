@@ -1,0 +1,185 @@
+/* /work-with-me: offers as ruled rows, the terms as a title block, the
+   steps numbered large. Scoped under .wwm. */
+
+/* The proof line and the buttons sit under the lead, on its columns
+   (PageHead's .intro .lead). */
+.wwm .wwm-actions {
+  margin-top: 14px;
+  row-gap: 26px;
+}
+
+.wwm .wwm-actions p {
+  grid-column: 4 / span 6;
+  margin: 0;
+}
+
+.wwm .wwm-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 1100px) {
+  .wwm .wwm-actions p {
+    grid-column: 1 / -1;
+  }
+}
+
+.wwm .page-head .side p {
+  margin: 0;
+}
+
+.wwm .wwm-offers,
+.wwm .wwm-steps {
+  list-style: none;
+  margin: 34px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.wwm .wwm-offers li {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 8px;
+  align-items: baseline;
+  padding: 20px 0 21px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.wwm .n {
+  grid-column: 1 / span 1;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.wwm .wwm-offers h3 {
+  grid-column: 2 / span 4;
+  margin: 0;
+  font-size: clamp(22px, 2vw, 30px);
+  font-weight: 760;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.wwm .wwm-offers p {
+  grid-column: 6 / span 5;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.wwm .wwm-offers .more {
+  grid-column: 11 / span 2;
+  justify-self: end;
+}
+
+.wwm .wwm-terms {
+  margin: 34px 0 0;
+  border: 1px solid var(--rule);
+}
+
+.wwm .wwm-terms > div {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: 12px 12px 13px;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+
+.wwm .wwm-terms > div:last-child {
+  border-bottom: 0;
+}
+
+.wwm .wwm-terms dt {
+  grid-column: 1 / span 2;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.wwm .wwm-terms dd {
+  grid-column: 3 / span 8;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.wwm .wwm-steps li {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: baseline;
+  padding: 16px 0 18px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.wwm .wwm-steps .n {
+  font-family: var(--sans);
+  font-size: clamp(40px, 4.2vw, 60px);
+  font-weight: 820;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.wwm .wwm-steps p {
+  grid-column: 2 / span 7;
+  margin: 0;
+  font-size: clamp(19px, 1.6vw, 23px);
+  line-height: 1.3;
+  font-weight: 520;
+  letter-spacing: -0.015em;
+}
+
+@media (max-width: 1100px) {
+  .wwm .wwm-offers h3 {
+    grid-column: 2 / span 11;
+  }
+
+  .wwm .wwm-offers p {
+    grid-column: 2 / span 9;
+  }
+
+  .wwm .wwm-offers .more {
+    grid-column: 11 / span 2;
+  }
+
+  .wwm .wwm-steps p {
+    grid-column: 2 / span 11;
+  }
+}
+
+@media (max-width: 700px) {
+  .wwm .wwm-offers h3,
+  .wwm .wwm-offers p,
+  .wwm .wwm-terms dt,
+  .wwm .wwm-terms dd {
+    grid-column: 2 / -1;
+  }
+
+  .wwm .wwm-offers .more {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+
+  .wwm .wwm-terms dt {
+    grid-column: 1 / -1;
+  }
+
+  .wwm .wwm-terms dd {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+  }
+
+  .wwm .wwm-steps p {
+    grid-column: 2 / -1;
+  }
+}

@@ -1,0 +1,87 @@
+/* ------------------------------------------------------------------
+   The components of an .mdx post (src/content/mdx-components.tsx).
+   Only MDX posts load this file (src/app/mdx/blog/[slug]), so markdown
+   posts keep the stylesheet they had.
+   ------------------------------------------------------------------ */
+
+@layer components {
+  /* Figures leave the reading measure, as code and lone pictures do. */
+  .prose > .markdown > :is(.mdx-figure, .mdx-demo) {
+    max-width: min(100%, 56rem);
+    margin-block: 2em;
+  }
+
+  .prose > .markdown > :is(.mdx-figure, .mdx-demo) + * {
+    margin-top: 0;
+  }
+
+  .mdx-cap {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--hair);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: var(--measure);
+  }
+
+  .mdx-cap b {
+    margin-right: 0.5em;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* A picture: in a ruled frame on the image well, multiplied onto it. */
+  .mdx-figure .frame,
+  .mdx-demo .frame {
+    background: var(--paper-2);
+    --ink-3: #5b6169;
+  }
+
+  .mdx-figure img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
+    mix-blend-mode: multiply;
+  }
+
+  /* A post's own component: a ruled frame with room around it. */
+  .mdx-demo .frame {
+    padding: 20px;
+  }
+
+  .mdx-demo .frame > .live-slot > * + * {
+    margin-top: 1em;
+  }
+
+  /* A side note: smaller, set off by an accent rule and its label. */
+  .mdx-aside {
+    padding-left: 1.1em;
+    border-left: 2px solid var(--accent);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .mdx-aside > .label {
+    margin: 0 0 0.4em;
+    color: var(--ink-2);
+  }
+
+  .mdx-aside > * + * {
+    margin-top: 0.8em;
+  }
+
+  .mdx-aside > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* An h2–h6 has an id: a link to it lands below the running head. */
+  .prose :is(h2, h3, h4, h5, h6)[id] {
+    scroll-margin-top: 80px;
+  }
+}

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="t">
+<title id="t">Twinteraction's tour engine: features such as the chatbot, quizzes, menus and the LTI bridge plug into one engine core through its registry; the core runs a tour defined in JSON and reaches the Matterport SDK, three.js, the host React app and the event system through ports; Moodle courses, outside the app, hold its tours.</title>
+<rect x="256" y="40" width="708" height="566" fill="none" stroke="#b9bec2" stroke-width="1.5" stroke-dasharray="6 6"/>
+<text x="964" y="30" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="18" font-weight="400" fill="#5b6169" text-anchor="end">TWINTERACTION</text>
+<text x="48" y="100" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">FEATURES</text>
+<text x="48" y="134" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">plug in</text>
+<text x="48" y="212" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#464b52" text-anchor="start">registry</text>
+<line x1="168.4" y1="205" x2="256" y2="205" stroke="#b9bec2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="48" y="296" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">ENGINE</text>
+<text x="48" y="330" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">one core</text>
+<text x="48" y="408" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#464b52" text-anchor="start">calls out</text>
+<line x1="181.7" y1="401" x2="256" y2="401" stroke="#b9bec2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="48" y="500" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">PORTS</text>
+<text x="48" y="534" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">what it drives</text>
+<rect x="270" y="60" width="161" height="106" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="286" y="120" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#0b0c0e" text-anchor="start">chatbot</text>
+<rect x="443" y="60" width="161" height="106" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="459" y="120" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#0b0c0e" text-anchor="start">quizzes</text>
+<rect x="616" y="60" width="161" height="106" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="632" y="120" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#0b0c0e" text-anchor="start">menus</text>
+<rect x="789" y="60" width="161" height="106" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="805" y="104" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#0b0c0e" text-anchor="start">LTI</text>
+<text x="805" y="136" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#0b0c0e" text-anchor="start">bridge</text>
+<rect x="270" y="240" width="150" height="120" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="288" y="292" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#0b0c0e" text-anchor="start">tour</text>
+<text x="288" y="330" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#464b52" text-anchor="start">JSON</text>
+<line x1="420" y1="300" x2="442" y2="300" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M440 309 L454 300 L440 291 Z" fill="#ff3f0f"/>
+<rect x="456" y="240" width="494" height="120" fill="#0b0c0e" stroke="#0b0c0e" stroke-width="2"/>
+<text x="480" y="296" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="44" font-weight="800" fill="#eef1f2" text-anchor="start">Engine core</text>
+<text x="480" y="334" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="21" font-weight="400" fill="#c3c8cc" text-anchor="start">runs the tour on its own</text>
+<line x1="350.5" y1="166" x2="485.24478965125775" y2="232.67783405423063" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M479.46063013380694 239.85721415815908 L496 238 L487.44387905246106 223.7243986350457 Z" fill="#ff3f0f"/>
+<line x1="523.5" y1="166" x2="623.9459585767701" y2="231.44895038486376" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M617.3569977948796 237.8976398497635 L634 238 L627.183572217584 222.8165777149186 Z" fill="#ff3f0f"/>
+<line x1="696.5" y1="166" x2="763.3158174650996" y2="229.71839546340624" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M755.6572503068376 234.85126494181588 L772 238 L768.0796571117282 221.82499113946528 Z" fill="#ff3f0f"/>
+<line x1="869.5" y1="166" x2="904.1168651244093" y2="227.5410935545054" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M895.2921628110232 230.21029363694936 L910 238 L910.9805224792651 221.3855913235633 Z" fill="#ff3f0f"/>
+<line x1="496" y1="362" x2="361.19611811899966" y2="430.56004989136784" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M358.8988418906922 421.6313029506794 L350.5 436 L367.0587670536404 437.6754801291789 Z" fill="#ff3f0f"/>
+<rect x="270" y="438" width="161" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="284" y="494" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e" text-anchor="start">Matterport</text>
+<text x="284" y="524" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e" text-anchor="start">SDK</text>
+<line x1="634" y1="362" x2="533.4706998838387" y2="429.3227892180628" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M530.1245751113588 420.7318958415275 L523.5 436 L540.1403912842648 435.6879456672856 Z" fill="#ff3f0f"/>
+<rect x="443" y="438" width="161" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="457" y="520" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e" text-anchor="start">three.js</text>
+<line x1="772" y1="362" x2="705.0699866171715" y2="427.60027801760674" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M700.1985262332385 419.77283439099585 L696.5 436 L712.7981092068285 432.6278143167532 Z" fill="#ff3f0f"/>
+<rect x="616" y="438" width="161" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="630" y="494" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e" text-anchor="start">host</text>
+<text x="630" y="524" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e" text-anchor="start">React app</text>
+<line x1="910" y1="362" x2="875.2611697389449" y2="425.47341825476735" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M868.3264283865112 419.39811065968655 L869.5 436 L884.1163010043601 428.03986526810394 Z" fill="#ff3f0f"/>
+<rect x="789" y="438" width="161" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="803" y="494" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e" text-anchor="start">event</text>
+<text x="803" y="524" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0b0c0e" text-anchor="start">system</text>
+<rect x="995" y="240" width="157" height="120" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="1011" y="292" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#0b0c0e" text-anchor="start">Moodle</text>
+<text x="1011" y="330" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#464b52" text-anchor="start">courses</text>
+<line x1="964" y1="300" x2="995" y2="300" stroke="#0b0c0e" stroke-width="2"/>
+<text x="995" y="400" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="20" font-weight="400" fill="#464b52" text-anchor="start">our tours</text>
+<text x="995" y="426" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="20" font-weight="400" fill="#464b52" text-anchor="start">inside its</text>
+<text x="995" y="452" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="20" font-weight="400" fill="#464b52" text-anchor="start">courses</text>
+</svg>

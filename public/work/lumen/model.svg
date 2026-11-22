@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="t">
+<title id="t">How Lumen decides what to teach: two explicit models, the subject (concepts and what comes before what) and the learner (evidence folded into mastery, which can fade), feed the planner, which computes what to learn next and why: the frontier of what the learner can learn now. Activities such as a quiz, a drill, a practice test and a Socratic dialogue run as data, and their results come back as evidence about the learner.</title>
+<text x="48" y="100" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">MODELS</text>
+<text x="48" y="134" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">kept, explicit</text>
+<text x="48" y="296" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">PLANNER</text>
+<text x="48" y="330" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">computed</text>
+<text x="48" y="500" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="28" font-weight="600" fill="#0b0c0e" text-anchor="start">ACTIVITIES</text>
+<text x="48" y="534" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="22" font-weight="400" fill="#5b6169" text-anchor="start">kinds as data</text>
+<rect x="300" y="50" width="400" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="322" y="96" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#0b0c0e" text-anchor="start">The subject</text>
+<text x="322" y="132" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">concepts, and what</text>
+<text x="322" y="157" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">comes before what</text>
+<line x1="600" y1="80" x2="570" y2="125" stroke="#464b52" stroke-width="1.5"/>
+<line x1="600" y1="80" x2="640" y2="125" stroke="#464b52" stroke-width="1.5"/>
+<line x1="570" y1="125" x2="600" y2="170" stroke="#464b52" stroke-width="1.5"/>
+<line x1="640" y1="125" x2="600" y2="170" stroke="#464b52" stroke-width="1.5"/>
+<line x1="640" y1="125" x2="665" y2="172" stroke="#464b52" stroke-width="1.5"/>
+<circle cx="600" cy="80" r="6" fill="#0b0c0e" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="570" cy="125" r="5" fill="#0b0c0e" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="640" cy="125" r="5" fill="#0b0c0e" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="600" cy="170" r="5" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<circle cx="665" cy="172" r="5" fill="none" stroke="#0b0c0e" stroke-width="1.5"/>
+<rect x="730" y="50" width="422" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="752" y="96" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#0b0c0e" text-anchor="start">The learner</text>
+<text x="752" y="132" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">evidence → mastery,</text>
+<text x="752" y="157" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="19" font-weight="400" fill="#464b52" text-anchor="start">derived, and it can fade</text>
+<line x1="500" y1="202" x2="500" y2="226" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M491 224 L500 238 L509 224 Z" fill="#ff3f0f"/>
+<line x1="850" y1="202" x2="850" y2="226" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M841 224 L850 238 L859 224 Z" fill="#ff3f0f"/>
+<rect x="300" y="240" width="600" height="120" fill="#0b0c0e" stroke="#0b0c0e" stroke-width="2"/>
+<text x="326" y="296" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="40" font-weight="800" fill="#eef1f2" text-anchor="start">What next, and why</text>
+<text x="326" y="334" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="20" font-weight="400" fill="#c3c8cc" text-anchor="start">the frontier of what you can learn</text>
+<line x1="600" y1="362" x2="600" y2="424" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M591 422 L600 436 L609 422 Z" fill="#ff3f0f"/>
+<rect x="300" y="438" width="139.5" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="314" y="520" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0b0c0e" text-anchor="start">quiz</text>
+<rect x="453.5" y="438" width="139.5" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="467.5" y="520" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0b0c0e" text-anchor="start">drill</text>
+<rect x="607" y="438" width="139.5" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="621" y="494" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0b0c0e" text-anchor="start">practice</text>
+<text x="621" y="522" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0b0c0e" text-anchor="start">test</text>
+<rect x="760.5" y="438" width="139.5" height="150" fill="none" stroke="#0b0c0e" stroke-width="2"/>
+<text x="774.5" y="494" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0b0c0e" text-anchor="start">Socratic</text>
+<text x="774.5" y="522" font-family="'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0b0c0e" text-anchor="start">dialogue</text>
+<line x1="900" y1="513" x2="1110" y2="513" stroke="#ff3f0f" stroke-width="3"/>
+<line x1="1110" y1="514" x2="1110" y2="214" stroke="#ff3f0f" stroke-width="3"/>
+<path d="M1119 216 L1110 202 L1101 216 Z" fill="#ff3f0f"/>
+<text x="924" y="550" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="21" font-weight="400" fill="#464b52" text-anchor="start">results come</text>
+<text x="924" y="576" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="21" font-weight="400" fill="#464b52" text-anchor="start">back as</text>
+<text x="924" y="602" font-family="'IBM Plex Mono', Menlo, Consolas, monospace" font-size="21" font-weight="400" fill="#464b52" text-anchor="start">evidence</text>
+</svg>

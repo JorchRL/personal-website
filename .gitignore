@@ -35,3 +35,14 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# playwright
+/test-results/
+
+# next.js generated types
+next-env.d.ts
+
+# private build notes and generated reports (kept out of the public repo)
+/TODO-REPORT.md
+/docs/superpowers/
+/docs/first-pass-report.md
