@@ -12,6 +12,7 @@ import { GET as twin, generateStaticParams as twinParams } from "@/app/md/blog/[
 import { generateStaticParams as mdxParams } from "@/app/mdx/blog/[slug]/page";
 import { generateStaticParams as ogParams } from "@/app/blog/[slug]/opengraph-image";
 import { AI_DRAFT_LINE, draftsBuilt, draftsFailBuild, isDraftSource } from "@/content/drafts";
+import { getAllArt } from "@/content/art";
 import { getAllPosts, getPagePost, getPagePosts, getPost, mdxPostSlugs, readPosts } from "@/content/posts";
 import { getAllWork } from "@/content/work";
 import { buildLlmsTxt } from "@/seo/llms";
@@ -62,7 +63,7 @@ describe("a draft where drafts are built", () => {
     expect(getAllPosts().map((p) => p.slug)).not.toContain(DRAFT);
     expect(getPost(DRAFT)).toBeUndefined();
     expect(buildRss(getAllPosts())).not.toContain(DRAFT);
-    expect(buildLlmsTxt(getAllPosts(), getAllWork())).not.toContain(DRAFT);
+    expect(buildLlmsTxt(getAllPosts(), getAllWork(), getAllArt())).not.toContain(DRAFT);
     expect(JSON.stringify(sitemap())).not.toContain(DRAFT);
     expect(JSON.stringify(resolveShowcase(showcase))).not.toContain(DRAFT);
     // Named in the showcase, a draft is a post that does not exist.

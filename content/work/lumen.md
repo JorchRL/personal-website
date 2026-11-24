@@ -23,7 +23,7 @@ figure:
   alt: "A diagram of how Lumen decides what to teach. Two explicit models sit at the top: the subject, concepts and what comes before what, drawn as a small graph; and the learner, evidence folded into mastery, which can fade. Both feed the planner, which computes what to learn next and why: the frontier of what the learner can learn now. Below, activities such as a quiz, a drill, a practice test and a Socratic dialogue run as data, and their results come back as evidence about the learner."
   width: 1200
   height: 630
-  caption: "A diagram, not a screenshot. Two models feed the planner; activities run as data, and what the learner does comes back as evidence."
+  caption: "Two models feed the planner. Activities run as data, and what the learner does comes back as evidence."
 ---
 
 Lumen is a tutor with a map. You name a topic, or paste a syllabus. Lumen breaks it into
@@ -37,7 +37,7 @@ to end offline, and once against a live model. No real learner has used it yet.
 ## Why I am building it
 
 Before software I did research on creativity, within cognitive science. At
-[Whiz.Study](/work/whiz-study) I built a learning platform: an
+[Whiz.Study](/work/whiz-study) I designed a learning platform: an
 [exam engine](/work/whiz-study#the-exam-engine-one-runtime-exams-as-data), lessons and
 an AI tutor. Modelling what each student knows, to tailor what they learn next, was
 discussed there but never built. Lumen is that idea, and it is entirely mine. It is a

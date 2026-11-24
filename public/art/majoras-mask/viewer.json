@@ -1,0 +1,57 @@
+{
+  "version": 2,
+  "relief": "estimated",
+  "sheetMM": [
+    268.22,
+    210.14
+  ],
+  "lamp": [
+    {
+      "width": 2048,
+      "height": 1605
+    },
+    {
+      "width": 3072,
+      "height": 2407
+    }
+  ],
+  "layers": {
+    "sizes": [
+      {
+        "width": 1536,
+        "height": 1203
+      },
+      {
+        "width": 3072,
+        "height": 2407
+      }
+    ],
+    "height": {
+      "width": 1536,
+      "height": 1203
+    },
+    "cards": [
+      {
+        "name": "sky",
+        "depth": 0
+      },
+      {
+        "name": "hair and spikes",
+        "depth": 0.47
+      },
+      {
+        "name": "mask face",
+        "depth": 0.64
+      },
+      {
+        "name": "rocks",
+        "depth": 0.74
+      },
+      {
+        "name": "hand",
+        "depth": 0.86
+      }
+    ],
+    "focus": 2
+  }
+}

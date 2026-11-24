@@ -46,3 +46,9 @@ next-env.d.ts
 /TODO-REPORT.md
 /docs/superpowers/
 /docs/first-pass-report.md
+
+# pnpm art:prepare: its own dependencies, the depth model's weights, and its
+# working files (the depth estimate, the cut previews); all local only
+/scripts/art-prepare/node_modules/
+/scripts/art-prepare/.model-cache/
+/.art-work/

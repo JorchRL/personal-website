@@ -2,9 +2,9 @@
 // (their dates, roles and stacks), the core facts (content/site.ts: the
 // title, availability, contact details, what he is looking for) and the
 // hiring terms (content/hire.ts). /cv renders it, its markdown twin is
-// made from it, and public/cv.pdf is printed from /cv. `rev` is a hash of
-// everything else in it: the page prints it, so a test can tell when the PDF
-// is older than the content.
+// made from it, and public/cv.pdf is typeset from it (scripts/cv-pdf.mjs).
+// `rev` is a hash of everything else in it: the PDF prints it, so a test can
+// tell when the PDF is older than the content.
 
 import { createHash } from "node:crypto";
 import { cv } from "@content/cv";
@@ -17,6 +17,10 @@ export type CvJob = {
   id: string;
   title: string;
   company: string;
+  /** What the work was on, under the company: the app, when it is not the company's name. */
+  context?: string;
+  /** "Remote", on the company's row. */
+  location?: string;
   dates: string;
   href: string;
   outcomes: string[];
@@ -94,6 +98,8 @@ export function getCv(): Cv {
       id: job.work,
       title: job.title,
       company: job.company,
+      ...("context" in job && job.context ? { context: job.context } : {}),
+      ...("location" in job && job.location ? { location: job.location } : {}),
       dates: page(work, job.work).period,
       href: `/work/${job.work}`,
       outcomes: [...job.outcomes],

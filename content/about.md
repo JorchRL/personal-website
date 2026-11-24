@@ -8,7 +8,7 @@ Before software, I did research on creativity, within cognitive science: "system
 creativity in particular, and computational creativity. I switched careers
 during the pandemic. I first tried to learn to code in 2012, with C# and Unity.
 
-The interest carried over. At Whiz.Study I built a learning platform and an AI tutor.
+The interest carried over. At Whiz.Study I designed a learning platform's exam engine and its AI tutor.
 On my own, I am building [Lumen](/work/lumen) (a working name), on modelling what a
 learner knows: a tutor that keeps one model of a subject, its concepts and what comes
 before what, and one of the learner, whose mastery is worked out from evidence and can
@@ -19,6 +19,10 @@ Now I am going back to games, properly. I am making
 [The Lone Wander](/work/the-lone-wander), a small 3D Zelda-like in Godot, and
 [Plain Engine](/work/plain-engine), a game engine written by hand in C++, following
 Handmade Hero. I build both myself, and I type every line of the engine.
+
+## Painting
+
+I also paint, in watercolour. I started in August 2026, and I want to use hand-painted watercolour textures in one of my games. The paintings are on [Art](/art).
 
 ## What I'm looking for
 

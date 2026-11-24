@@ -15,6 +15,8 @@ type Props = {
   /** Extra classes for the title (long/short). */
   titleClass?: string;
   lead?: ReactNode;
+  /** Set the lead as reading prose (a paragraph or two) instead of display type. */
+  prose?: boolean;
   /** Margin notes beside the lead (a small mono list). */
   side?: ReactNode;
   /**
@@ -22,10 +24,12 @@ type Props = {
    * title is sized to fit the screen's width on one line.
    */
   fit?: string;
+  /** A short text set beside the title (desktop), below it on a phone. */
+  aside?: ReactNode;
   children?: ReactNode;
 };
 
-export function PageHead({ label, status, title, kind = "page", titleClass = "", lead, side, fit, children }: Props) {
+export function PageHead({ label, status, title, kind = "page", titleClass = "", lead, prose, side, fit, aside, children }: Props) {
   const text = typeof title === "string" ? title : fit;
   // One word or two, short enough to set on one line at a phone's width.
   const fits = !!text && text.length <= 16;
@@ -35,15 +39,27 @@ export function PageHead({ label, status, title, kind = "page", titleClass = "",
         <p className="l label">{label}</p>
         {status && <p className="r mono">{status}</p>}
       </div>
-      <h1
-        className={`page-title ${titleClass} ${fits ? "fit" : ""}`.trim()}
-        style={fits ? ({ "--chars": text.length } as React.CSSProperties) : undefined}
-      >
-        {title}
-      </h1>
+      {aside ? (
+        <div className="title-row">
+          <h1
+            className={`page-title ${titleClass} ${fits ? "fit" : ""}`.trim()}
+            style={fits ? ({ "--chars": text.length } as React.CSSProperties) : undefined}
+          >
+            {title}
+          </h1>
+          <p className="title-aside">{aside}</p>
+        </div>
+      ) : (
+        <h1
+          className={`page-title ${titleClass} ${fits ? "fit" : ""}`.trim()}
+          style={fits ? ({ "--chars": text.length } as React.CSSProperties) : undefined}
+        >
+          {title}
+        </h1>
+      )}
       {(lead || side) && (
         <div className="intro grid">
-          {lead && <p className="lead">{lead}</p>}
+          {lead && <p className={prose ? "lead prose" : "lead"}>{lead}</p>}
           {side && <div className="side mono">{side}</div>}
         </div>
       )}

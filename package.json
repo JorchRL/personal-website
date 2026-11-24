@@ -17,7 +17,8 @@
     "check": "node scripts/check.mjs",
     "todos": "node scripts/todo-report.mjs",
     "verify": "node scripts/verify.mjs",
-    "cv:pdf": "node scripts/cv-pdf.mjs"
+    "cv:pdf": "node scripts/cv-pdf.mjs",
+    "art:prepare": "pnpm --dir scripts/art-prepare install --silent && node scripts/art-prepare/prepare.mjs"
   },
   "dependencies": {
     "@mdx-js/mdx": "^3.1.1",

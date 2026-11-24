@@ -5,12 +5,16 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// next/font runs only inside Next's compiler; /cv's page imports its fonts.
+vi.mock("next/font/local", () => ({ default: () => ({ className: "", variable: "", style: {} }) }));
 import { studioRoles } from "@content/about";
 import { site } from "@content/site";
 import { home } from "@content/home";
 import { workWithMe } from "@content/work-with-me";
 import { getCv, CV_PDF } from "@/content/cv";
+import { getAllArt } from "@/content/art";
 import { getAllPosts } from "@/content/posts";
 import { getAllWork } from "@/content/work";
 import { getSkills, PENDING } from "@/content/skills";
@@ -22,45 +26,53 @@ import sitemap from "@/app/sitemap";
 import { metadata as cvMetadata } from "@/app/cv/page";
 import WorkWithMePage, { metadata as workWithMeMetadata } from "@/app/work-with-me/page";
 import { metadata as aboutMetadata } from "@/app/about/page";
-import { pdfLinks, pdfText } from "./pdf-text";
+import { bulletLength, BULLET_WINDOW, cvTex } from "../scripts/lib/cv-tex.mjs";
+import { pdfLinks, pdfPageCount, pdfText, squash } from "./pdf-text";
 
 const root = process.cwd();
 const pdfPath = path.join(root, "public", CV_PDF);
 
 describe("public/cv.pdf", () => {
   it("exists, is a PDF and is under 2.5 MB", () => {
-    expect(existsSync(pdfPath), "run: pnpm build && pnpm cv:pdf").toBe(true);
+    expect(existsSync(pdfPath), "run: pnpm cv:pdf").toBe(true);
     const pdf = readFileSync(pdfPath);
     expect(pdf.subarray(0, 5).toString("latin1")).toBe("%PDF-");
     expect(statSync(pdfPath).size).toBeLessThan(2.5 * 1024 * 1024);
   });
 
-  it("is text, not a picture: the name, the contact details and each entry read back", () => {
-    const text = pdfText(readFileSync(pdfPath));
-    const cv = getCv();
-    for (const expected of [cv.name, cv.contact.email, cv.contact.linkedin, cv.contact.github]) {
-      expect(text).toContain(expected);
-    }
-    for (const job of cv.experience) expect(text).toContain(job.company);
-    for (const project of cv.projects) expect(text).toContain(project.name);
+  it("is one page", () => {
+    expect(pdfPageCount(readFileSync(pdfPath))).toBe(1);
   });
 
-  it("reads each outcome line with its dash, in order, right after its entry", () => {
-    // A marker drawn out of the text's flow reads detached from its line.
-    const text = pdfText(readFileSync(pdfPath));
+  it("is text, not a picture: the name, the contact details and each entry read back", () => {
+    const text = squash(pdfText(readFileSync(pdfPath)));
     const cv = getCv();
+    for (const expected of [cv.name, cv.contact.email, cv.contact.linkedin, cv.contact.github]) {
+      expect(text).toContain(squash(expected));
+    }
+    for (const job of cv.experience) {
+      expect(text).toContain(squash([job.company, job.location, job.context, job.title, job.dates].filter(Boolean).join(" ")));
+    }
+    for (const project of cv.projects) expect(text).toContain(squash(project.name));
+  });
+
+  it("reads each outcome line with its bullet (U+2022), in order, right after its entry", () => {
+    // A marker drawn out of the text's flow reads detached from its line.
+    const text = squash(pdfText(readFileSync(pdfPath)));
+    const cv = getCv();
+    const plain = (line: string) => squash(`• ${line.replace(/\*\*/g, "")}`);
     for (const entry of [...cv.experience, ...cv.projects]) {
       for (const line of entry.outcomes.filter((o) => !o.includes("TODO"))) {
-        expect(text, line).toContain(`– ${line}`);
+        expect(text, line).toContain(plain(line));
       }
     }
     // The first job's lines come before the projects' heads, not after the whole sheet.
-    expect(text.indexOf(cv.experience[0].outcomes[0])).toBeLessThan(text.indexOf(cv.projects[0].name));
+    expect(text.indexOf(plain(cv.experience[0].outcomes[0]))).toBeLessThan(text.indexOf(squash(cv.projects[0].name)));
   });
 
-  it("is printed from the content as it stands (else: pnpm build && pnpm cv:pdf)", () => {
-    const text = pdfText(readFileSync(pdfPath));
-    expect(text).toContain(`rev. ${getCv().rev}`);
+  it("is typeset from the content as it stands (else: pnpm cv:pdf)", () => {
+    const text = squash(pdfText(readFileSync(pdfPath)));
+    expect(text).toContain(squash(`rev. ${getCv().rev}`));
   });
 
   it("shows its missing facts as TODOs, like the page", () => {
@@ -87,6 +99,25 @@ describe("public/cv.pdf", () => {
   it("is a download the CV's link reports as cv_download, and /cv as cv_open", () => {
     expect(contactEvent(`${site.url}${CV_PDF}`)).toBe("cv_download");
     expect(contactEvent(`${site.url}/cv`)).toBe("cv_open");
+  });
+});
+
+describe("the CV's LaTeX (scripts/lib/cv-tex.mjs)", () => {
+  const tex = cvTex(getCv(), site.url);
+
+  it("sets each key fact in bold and escapes LaTeX's special characters", () => {
+    expect(tex).toContain("\\textbf{300,000+ line}");
+    expect(tex).toContain("\\$5k");
+    expect(tex).not.toContain("**");
+  });
+
+  it("links each entry to its work page on the live site", () => {
+    for (const entry of [...getCv().experience, ...getCv().projects]) expect(tex).toContain(`\\entrylink{${site.url}${entry.href}}`);
+  });
+
+  it("measures a bullet without its bold marks", () => {
+    expect(bulletLength("a **b** c")).toBe(5);
+    expect(BULLET_WINDOW.min).toBeLessThan(BULLET_WINDOW.max);
   });
 });
 
@@ -216,7 +247,7 @@ describe("machine forms of the new pages", () => {
   });
 
   it("list the CV, its PDF, /work-with-me and /about in llms.txt", () => {
-    const txt = buildLlmsTxt(getAllPosts(), getAllWork());
+    const txt = buildLlmsTxt(getAllPosts(), getAllWork(), getAllArt());
     for (const url of ["/cv.md", "/cv.pdf", "/work-with-me.md", "/about.md"]) expect(txt).toContain(`${site.url}${url}`);
     expect(txt).not.toContain("TODO");
   });

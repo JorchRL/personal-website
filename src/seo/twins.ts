@@ -1,5 +1,5 @@
 // The markdown twins: every post at /blog/<slug>.md, every work page at
-// /work/<slug>.md, and /cv.md, /work-with-me.md and /about.md, for agents. A short header of facts, the body as written,
+// /work/<slug>.md, every painting at /art/<slug>.md, and /cv.md, /work-with-me.md and /about.md, for agents. A short header of facts, the body as written,
 // links made absolute, the old blog's widget lines and every TODO left out.
 // An .mdx post's components become plain lines (src/content/mdx-plain.ts).
 
@@ -9,13 +9,25 @@ import { home } from "@content/home";
 import { site } from "@content/site";
 import { workWithMe } from "@content/work-with-me";
 import { CV_PATH, CV_PDF, type Cv } from "@/content/cv";
+import {
+  enquiryHref,
+  fanArtLabel,
+  knownYear,
+  mediumLabel,
+  offersEnquiry,
+  paintsWithPigments,
+  paperPlain,
+  printsLink,
+  sizeLabel,
+  type Painting,
+} from "@/content/art";
 import { postPlain } from "@/content/blog-components/plain";
 import { describer, mdxToMarkdown, parseMdx } from "@/content/mdx-plain";
 import { getSkills } from "@/content/skills";
 import type { Post } from "@/content/posts";
 import type { Work } from "@/content/work";
 import { stripTodos } from "@/content/todos";
-import { absoluteUrl, postPath, workPath } from "./urls";
+import { absoluteUrl, artPath, postPath, workPath } from "./urls";
 
 export function postMarkdown(post: Post): string {
   const tags = post.tags.map(stripTodos).filter(Boolean);
@@ -51,6 +63,27 @@ export function workMarkdown(work: Work): string {
   ], work.body);
 }
 
+export function artMarkdown(painting: Painting): string {
+  const paints = paintsWithPigments(painting);
+  const picture = `![${stripTodos(painting.alt)}](${painting.image})`;
+  const year = knownYear(painting);
+  const prints = printsLink(painting);
+  return document(stripTodos(painting.title) || painting.slug, [
+    `- Painted by: ${site.name}`,
+    ...(year ? [`- Year: ${year}`] : []),
+    `- Medium: ${mediumLabel(painting)}`,
+    ...(painting.fanArt ? [`- ${fanArtLabel(painting)}`] : []),
+    `- Paper: ${paperPlain(painting)}`,
+    `- Size: ${sizeLabel(painting)}`,
+    ...(painting.making ? [`- Making: ${painting.making}`] : []),
+    ...(paints.length ? [`- Paints and pigments: ${paints.join(", ")}`] : []),
+    ...(offersEnquiry(painting) ? [`- Available: yes; to enquire, email ${site.email} (${enquiryHref(painting)})`] : []),
+    ...(prints ? [`- Prints: ${prints}`] : []),
+    `- Picture: ${absoluteUrl(painting.image)}`,
+    `- Web page: ${absoluteUrl(artPath(painting.slug))}`,
+  ], [picture, painting.body].filter(Boolean).join("\n\n"));
+}
+
 /** /cv.md: the CV, from the same object as /cv and public/cv.pdf. */
 export function cvMarkdown(cv: Cv): string {
   const line = (text: string) => stripTodos(text);
@@ -65,7 +98,9 @@ export function cvMarkdown(cv: Cv): string {
     "",
     "## Experience",
     "",
-    ...cv.experience.flatMap((job) => entry(`${line(job.title)}, ${job.company}`, job.dates, job.href, job.outcomes)),
+    ...cv.experience.flatMap((job) =>
+      entry(`${line(job.title)}, ${job.company}`, job.dates, job.href, job.outcomes, [job.context, job.location].filter(Boolean).join(" · ")),
+    ),
     "## Projects",
     "",
     ...cv.projects.flatMap((p) =>

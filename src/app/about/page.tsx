@@ -16,6 +16,7 @@ import { profilePageJsonLd } from "@/seo/jsonld";
 import { pageMetadata } from "@/seo/metadata";
 import { JsonLd } from "@/ui/JsonLd";
 import { PageHead } from "@/ui/PageHead";
+import { sheetLabel } from "@/ui/sections";
 import { Profiles } from "@/ui/Profiles";
 import { Prose } from "@/ui/Prose";
 import { SectionHead, sub } from "@/ui/SectionHead";
@@ -35,7 +36,12 @@ export default function AboutPage() {
   return (
     <div className="about">
       <JsonLd data={profilePageJsonLd()} />
-      <PageHead label="Sheet 03 — About" status={<span className="status">{site.availability}</span>} title="About" />
+      <PageHead
+        label={sheetLabel("/about")}
+        status={<span className="status">{site.availability}</span>}
+        title="About"
+        lead={site.roles}
+      />
       <div className="article-body grid">
         <aside className="margin mono" aria-label="Facts">
           <dl>

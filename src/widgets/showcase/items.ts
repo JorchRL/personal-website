@@ -4,25 +4,31 @@
 // figure. All of it comes from the item's own content; nothing else is written
 // here. An item that names nothing throws, naming the item: the build fails.
 
+import { gallery } from "@content/gallery";
 import type { ShowcaseItem } from "@content/showcase";
+import { getAllArt, plateNo, yearSpan } from "@/content/art";
 import { getNowParts } from "@/content/pages";
 import { getPost } from "@/content/posts";
 import { getWork } from "@/content/work";
 import { isoDay } from "@/ui/format";
-import { postPath, workPath } from "@/seo/urls";
+import { ART_PATH, artPath, postPath, workPath } from "@/seo/urls";
 
 export type SlideFigure =
   | { type: "image"; src: string; width: number; height: number; alt: string }
   | { type: "missing"; todo: string }
-  | { type: "now"; body: string };
+  | { type: "now"; body: string }
+  | { type: "paintings"; paintings: SlidePainting[] };
+
+/** A painting on the art slide: its picture, its number on /art and its page. */
+export type SlidePainting = { src: string; width: number; height: number; alt: string; no: string; href: string };
 
 export type Slide = {
-  /** The slide's address: "now", "work-<slug>", "post-<slug>". */
+  /** The slide's address: "now", "work-<slug>", "post-<slug>", "art". */
   id: string;
   /** Older addresses that open it: the first slide of a kind takes that kind's old section id. */
   aliases: string[];
   kind: ShowcaseItem["kind"];
-  /** "Now", "Work", "Writing". */
+  /** "Now", "Work", "Writing", "Art". */
   label: string;
   title: string;
   /** Its name in the tab bar. */
@@ -34,14 +40,18 @@ export type Slide = {
   figure: SlideFigure;
 };
 
-const LABELS: Record<ShowcaseItem["kind"], string> = { now: "Now", work: "Work", post: "Writing" };
+const LABELS: Record<ShowcaseItem["kind"], string> = { now: "Now", work: "Work", post: "Writing", art: "Art" };
 
 /** The old home sections' addresses, each opened by the first slide of its kind. */
 const OLD_ADDRESSES: Record<ShowcaseItem["kind"], string[]> = {
   now: [],
   work: ["work", "experience"],
   post: ["writing"],
+  art: [],
 };
+
+/** How many paintings the art slide shows when its item names none. */
+export const ART_SLIDE_COUNT = 3;
 
 /** The first sentences of a description, up to two, as it is written. */
 export function lead(text: string, sentences = 2): string {
@@ -102,6 +112,41 @@ function resolve(item: ShowcaseItem, where: string): Omit<Slide, "aliases" | "no
         text: lead(work.description),
         href: workPath(work.slug),
         figure,
+      };
+    }
+    case "art": {
+      const all = getAllArt();
+      const picked = item.slugs
+        ? item.slugs.map((slug) => {
+            const painting = all.find((p) => p.slug === slug);
+            if (!painting) throw new Error(`${where}: no painting "${slug}" (content/art/${slug}.md)`);
+            return painting;
+          })
+        : all.slice(0, ART_SLIDE_COUNT);
+      if (picked.length < 3 || picked.length > 4) {
+        throw new Error(`${where}: the art slide shows three or four paintings, not ${picked.length}`);
+      }
+      const span = yearSpan(all);
+      return {
+        id: "art",
+        kind: "art",
+        label,
+        title: gallery.name,
+        tab: gallery.name,
+        facts: [all.length === 1 ? "1 painting" : `${all.length} paintings`, span],
+        text: gallery.lead,
+        href: ART_PATH,
+        figure: {
+          type: "paintings",
+          paintings: picked.map((p) => ({
+            src: p.image,
+            width: p.pixels.width,
+            height: p.pixels.height,
+            alt: p.alt,
+            no: plateNo(all.indexOf(p)),
+            href: artPath(p.slug),
+          })),
+        },
       };
     }
     case "post": {

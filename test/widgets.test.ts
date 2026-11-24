@@ -54,7 +54,7 @@ describe("widget registry", () => {
 
   it("lists only the site's pages in the sitemap", () => {
     const paths = sitemap().map((entry) => new URL(entry.url).pathname);
-    for (const p of paths) expect(p).toMatch(/^\/(work(\/[a-z0-9-]+)?|blog(\/[a-z0-9-]+)?|about|cv|work-with-me)?$/);
-    expect(paths).toEqual(expect.arrayContaining(["/", "/work", "/blog", "/about", "/cv", "/work-with-me"]));
+    for (const p of paths) expect(p).toMatch(/^\/(work(\/[a-z0-9-]+)?|art(\/[a-z0-9-]+)?|blog(\/[a-z0-9-]+)?|about|cv|work-with-me)?$/);
+    expect(paths).toEqual(expect.arrayContaining(["/", "/work", "/art", "/blog", "/about", "/cv", "/work-with-me"]));
   });
 });

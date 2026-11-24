@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "relief": "estimated",
+  "sheetMM": [
+    284.52,
+    203.16
+  ],
+  "lamp": [
+    {
+      "width": 2048,
+      "height": 1462
+    },
+    {
+      "width": 3072,
+      "height": 2194
+    }
+  ],
+  "layers": {
+    "sizes": [
+      {
+        "width": 1536,
+        "height": 1097
+      },
+      {
+        "width": 3072,
+        "height": 2194
+      }
+    ],
+    "height": {
+      "width": 1536,
+      "height": 1097
+    },
+    "cards": [
+      {
+        "name": "layer 0",
+        "depth": 0
+      },
+      {
+        "name": "layer 1",
+        "depth": 0.454
+      },
+      {
+        "name": "layer 2",
+        "depth": 0.639
+      },
+      {
+        "name": "layer 3",
+        "depth": 0.799
+      }
+    ],
+    "focus": 2
+  }
+}

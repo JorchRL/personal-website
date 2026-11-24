@@ -1,4 +1,4 @@
-// The first screen: the name, the role line and one proof line, availability,
+// The first screen: the name, the role line (both trades) and one proof line, availability,
 // the two buttons (Email me, CV) and the contact links. On a 390 × 844 phone
 // the name, role, availability and both buttons show without scrolling
 // (`pnpm verify` checks the elements marked data-first-screen).
@@ -33,7 +33,7 @@ export function Face() {
       <div className="hero-body grid">
         <div className="pitch rise d1">
           <p className="lead" data-first-screen>
-            {site.role}
+            {site.roles}
           </p>
           <p className="proof">{site.proof}</p>
           <p className="actions">

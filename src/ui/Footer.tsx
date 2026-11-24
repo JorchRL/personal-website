@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { site } from "@content/site";
-import { sections } from "./sections";
+import { shownSections } from "./sections";
 import { profiles } from "./Profiles";
 
 // The month of this build: the sheet's revision.
@@ -30,7 +30,7 @@ export function Footer() {
         <span className="label">Index</span>
         <nav className="v" aria-label="Footer">
           <ul>
-            {sections.map((s) => (
+            {shownSections().map((s) => (
               <li key={s.href}>
                 <Link href={s.href}>{s.label}</Link>
               </li>

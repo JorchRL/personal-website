@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "relief": "estimated",
+  "sheetMM": [
+    212.17,
+    271.19
+  ],
+  "lamp": [
+    {
+      "width": 1602,
+      "height": 2048
+    },
+    {
+      "width": 2403,
+      "height": 3071
+    }
+  ]
+}

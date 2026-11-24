@@ -1,10 +1,12 @@
 // One slide of the showcase, as the sheet prints it: the figure on the left
 // (a picture in a ruled frame; a work without one, its empty frame crossed
-// corner to corner with what to record; Now, its dated lines), and on the
+// corner to corner with what to record; Now, its dated lines; the art, a strip
+// of paintings at their own shapes, each linked to its page), and on the
 // right the kind and number, the name, the facts line, a line or two of the
 // item's own description and the link to its page. Every slide has the same
 // frame, so the deck's height changes little from one to the next.
 
+import Image from "next/image";
 import Link from "next/link";
 import { Markdown } from "@/content/Markdown";
 import { TodoText } from "@/content/TodoText";
@@ -78,6 +80,22 @@ function Figure({ slide }: { slide: SlideData }) {
           <span className="mark">No recording yet</span>
           <TodoText text={figure.todo} />
         </figcaption>
+      </figure>
+    );
+  }
+  if (figure.type === "paintings") {
+    return (
+      <figure className="slide-frame paintings">
+        <ol>
+          {figure.paintings.map((p) => (
+            <li key={p.href} style={{ "--ratio": (p.width / p.height).toFixed(4) } as React.CSSProperties}>
+              <Link href={p.href}>
+                <Image src={p.src} alt={p.alt} width={p.width} height={p.height} sizes="(max-width: 767px) 40vw, 18vw" loading="lazy" />
+                <span className="mono">{p.no}</span>
+              </Link>
+            </li>
+          ))}
+        </ol>
       </figure>
     );
   }

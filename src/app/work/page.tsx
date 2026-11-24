@@ -4,6 +4,7 @@ import { TodoText } from "@/content/TodoText";
 import { pageMetadata } from "@/seo/metadata";
 import { Closing } from "@/ui/Closing";
 import { PageHead } from "@/ui/PageHead";
+import { sheetLabel } from "@/ui/sections";
 
 export const metadata = pageMetadata({
   title: "Work",
@@ -17,7 +18,7 @@ export default function WorkIndex() {
   return (
     <>
       <PageHead
-        label="Sheet 01 — Work"
+        label={sheetLabel("/work")}
         status={`${work.length} projects`}
         title="Work"
         lead="Projects I worked on as an engineer and tech lead, and the game and engine I am building now."

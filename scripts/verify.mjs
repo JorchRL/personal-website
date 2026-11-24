@@ -8,8 +8,8 @@
 //    main heading and body text, and the same text and links as with JavaScript.
 // 2. At 360 px no page scrolls sideways, and nothing in <main> sticks out past
 //    the screen (main clips overflow, so a page can hide it instead of scrolling).
-// 3. Lighthouse, mobile, on the home page and one long post with code and
-//    images, 3 runs each. The bar is 95 for performance, accessibility and SEO.
+// 3. Lighthouse, mobile, on the home page, one long post with code and
+//    images, /art and one painting's page, 3 runs each. The bar is 95 for performance, accessibility and SEO.
 //    What fails the check is the median of the 3 runs, per score, below 95
 //    (a single run is noisy). Every run's scores are printed, and a run under
 //    95 is flagged "below 95", so a low run is visible even when the median
@@ -37,11 +37,23 @@
 //    and the page does not scroll sideways. With reduced motion a tab switches
 //    at once; without JavaScript the slides stack as a list; at 390 px they
 //    are a row to swipe through, and the page does not scroll sideways.
-// 7. Wide screens: the home page, /work, a work page, /blog, a long post, an
-//    MDX post (where drafts are built), /about, /cv and /work-with-me, at 1920,
+// 7. Wide screens: the home page, /work, a work page, /art, a painting's page,
+//    /blog, a long post, an MDX post (where drafts are built), /about, /cv and
+//    /work-with-me, at 1920,
 //    2560 and 3440 px wide (900 high): nothing visible in <main> is cut at the
 //    screen's edges or by a box that clips it (scripts/lib/edge-clip.mjs), and
 //    the page does not scroll sideways.
+// 8. The art section: every painting's page offers the enquiry exactly when
+//    its twin says it is available, and fan art never shows an enquiry or a
+//    print link. On the newest painting's page the close-up viewer's code is
+//    not in the first load; choosing the Lamp, then the Layers, loads it
+//    and draws (the time to the first frame is printed). Then, on the newest
+//    painting with both effects, at 1440 and 390 px, in a headless Chromium on
+//    the GPU (Metal; its name is printed),
+//    every change of mode (None, Lamp, Layers) moves nothing: the toolbar, the
+//    painting and the facts stay put to 1 px, the well keeps its colour, the
+//    controls stay inside the toolbar, and the layout-shift score is 0
+//    (scripts/lib/viewer-shift.mjs).
 //
 // Exits 1 if any check fails. SKIP_LIGHTHOUSE=1 skips step 3.
 
@@ -49,25 +61,12 @@ import { mkdirSync } from "node:fs";
 import lighthouse from "lighthouse";
 import { chromium } from "playwright";
 import { clippedAt } from "./lib/edge-clip.mjs";
+import { measureViewerShift, shiftProblems, VIEWER_BROWSER_ARGS } from "./lib/viewer-shift.mjs";
 
 const base = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 const SITE = "https://jrlgs.dev";
 // Long, with code, images and the longest code line of any post (239 characters).
 const POST = "/blog/how-to-and-why-go-serverless";
-const LIGHTHOUSE_PAGES = ["/", POST];
-const LIGHTHOUSE_MIN = 95;
-const LIGHTHOUSE_RUNS = 3;
-const SCREENSHOTS = [
-  ["home", "/"],
-  ["blog", "/blog"],
-  ["post", POST],
-  ["work", "/work"],
-  ["work-page", "/work/twinteraction"],
-  ["about", "/about"],
-];
-// Step 7: the wide screens.
-const WIDE = [1920, 2560, 3440];
-const WIDE_PAGES = ["/", "/work", "/work/twinteraction", "/blog", POST, "/blog/learning-by-guided-building-with-ai", "/about", "/cv", "/work-with-me"];
 const SHOT_DIR = "docs/screenshots";
 const SHOT_MAX_HEIGHT = 10_000;
 
@@ -146,6 +145,24 @@ function deckState() {
 }
 
 const routes = await sitemapRoutes();
+// The newest painting: the first on /art, as the sitemap lists them.
+const PAINTING = routes.find((r) => r.startsWith("/art/")) ?? "/art";
+const LIGHTHOUSE_PAGES = ["/", POST, "/art", PAINTING];
+const LIGHTHOUSE_MIN = 95;
+const LIGHTHOUSE_RUNS = 3;
+const SCREENSHOTS = [
+  ["home", "/"],
+  ["blog", "/blog"],
+  ["post", POST],
+  ["work", "/work"],
+  ["work-page", "/work/twinteraction"],
+  ["art", "/art"],
+  ["painting", PAINTING],
+  ["about", "/about"],
+];
+// Step 7: the wide screens.
+const WIDE = [1920, 2560, 3440];
+const WIDE_PAGES = ["/", "/work", "/work/twinteraction", "/art", PAINTING, "/blog", POST, "/blog/learning-by-guided-building-with-ai", "/about", "/cv", "/work-with-me"];
 // The debugging port is how Lighthouse drives the same browser.
 const browser = await chromium.launch({ args: ["--remote-debugging-port=9223"] });
 
@@ -504,6 +521,58 @@ console.log("\n— 7. Wide screens: nothing cut at the edges");
   console.log(`  checked ${checked} pages at ${WIDE.join(", ")} px`);
 }
 
+console.log("\n— 8. The art section: the close-up only when chosen, enquiries only where offered");
+{
+  // A string only the viewer's shaders have.
+  const VIEWER_MARK = "D_Charlie";
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const scripts = [];
+  page.on("response", (res) => {
+    if (res.url().endsWith(".js")) scripts.push(res.text().then((t) => t.includes(VIEWER_MARK), () => false));
+  });
+  await page.goto(base + PAINTING, { waitUntil: "networkidle" });
+  if ((await Promise.all(scripts)).some(Boolean)) fail(`${PAINTING}: the viewer's code is in the first load`);
+  const effects = (await page.locator(".inspect-mode button").allTextContents()).filter((name) => name !== "None");
+  for (const name of effects) {
+    const t = Date.now();
+    await page.locator(".inspect-mode").getByRole("button", { name, exact: true }).click();
+    const live = await page.waitForSelector("canvas.viewer-canvas[data-live]", { timeout: 30_000 }).then(() => true, () => false);
+    if (!live) fail(`${PAINTING}: the ${name} never drew (${await page.locator(".inspect-tools").textContent()})`);
+    else console.log(`  ${PAINTING}: ${name} drawn ${Date.now() - t} ms after the click`);
+  }
+  if (!(await Promise.all(scripts)).some(Boolean)) fail(`${PAINTING}: choosing an effect did not load the viewer's code`);
+  await ctx.close();
+
+  // Choosing a mode moves nothing, in a browser on the GPU, on the newest painting with both effects (Lamp and Layers).
+  let viewerPage = PAINTING;
+  for (const route of routes.filter((r) => /^\/art\/[^/]+$/.test(r))) {
+    if ((await (await fetch(base + route)).text()).includes(">Layers</button>")) {
+      viewerPage = route;
+      break;
+    }
+  }
+  const gpuBrowser = await chromium.launch({ args: VIEWER_BROWSER_ARGS });
+  for (const width of [1440, 390]) {
+    const r = await measureViewerShift(gpuBrowser, base + viewerPage, width);
+    const worst = Math.max(...Object.values(r.moved));
+    console.log(`  ${viewerPage} at ${width} px (${r.gpu}): ${r.states.length - 1} mode changes, largest movement ${worst.toFixed(1)} px, layout shift ${r.score.toFixed(4)}`);
+    for (const p of shiftProblems(r)) fail(`${viewerPage}: ${p}`);
+  }
+  await gpuBrowser.close();
+
+  for (const route of routes.filter((r) => /^\/art\/[^/]+$/.test(r))) {
+    const twin = await (await fetch(`${base}${route}.md`)).text();
+    const page = await (await fetch(base + route)).text();
+    const available = twin.includes("\n- Available: yes");
+    const fan = twin.includes("\n- Fan art: yes");
+    if (page.includes("data-enquiry") !== available) fail(`${route}: enquiry ${available ? "missing" : "shown"} (twin says ${available ? "" : "not "}available)`);
+    if (fan && (page.includes("data-enquiry") || page.includes("data-prints"))) fail(`${route}: fan art with an enquiry or a print link`);
+  }
+  console.log("  enquiries and print links checked on every painting");
+}
+
+for (const p of await (await import("./lib/pigment-drawer.mjs")).checkDrawer(browser, base + "/art")) fail(p); // 8, /art: opening, switching and closing a paint's sheet moves nothing (scripts/lib/pigment-drawer.mjs)
 await browser.close();
 console.log(failures.length ? `\nverify failed: ${failures.length} problem(s)` : "\nverify passed");
 process.exit(failures.length ? 1 : 0);

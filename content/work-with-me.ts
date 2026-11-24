@@ -49,7 +49,7 @@ export const workWithMe = {
     },
     {
       title: "A tech lead for a small team",
-      text: "I led five junior engineers through a rebuild at Whiz.Study, with a weekly tech meeting on ideas such as abstraction and ports and adapters.",
+      text: "I led three junior engineers, and mentored two more junior developers, through a rebuild at Whiz.Study, with a weekly tech meeting on ideas such as abstraction and ports and adapters.",
       proof: { label: "Whiz.Study", href: "/work/whiz-study#leading-the-team" },
     },
   ] satisfies Offer[],

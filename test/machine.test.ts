@@ -5,12 +5,13 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { site } from "@content/site";
+import { getAllArt, type Painting } from "@/content/art";
 import { getAllPosts, type Post } from "@/content/posts";
 import { getAllWork, type Work } from "@/content/work";
 import { TodoText } from "@/content/TodoText";
 import { buildRss } from "@/seo/rss";
 import { buildLlmsTxt } from "@/seo/llms";
-import { postMarkdown, workMarkdown } from "@/seo/twins";
+import { artMarkdown, postMarkdown, workMarkdown } from "@/seo/twins";
 import {
   blogPostingJsonLd,
   breadcrumbJsonLd,
@@ -18,6 +19,7 @@ import {
   personJsonLd,
   profilePageJsonLd,
   siteJsonLd,
+  visualArtworkJsonLd,
   zonedDate,
 } from "@/seo/jsonld";
 import robots from "@/app/robots";
@@ -52,6 +54,21 @@ const work = (over: Partial<Work> = {}): Work => ({
   ...over,
 });
 
+const painting = (over: Partial<Painting> = {}): Painting => ({
+  slug: "a-painting",
+  title: "A painting",
+  year: 2026,
+  image: "/art/a-painting.jpg",
+  alt: "Blue washes over a harbour.",
+  paper: "arches",
+  paints: ["ultramarine-blue", "white-gouache"],
+  available: false,
+  fanArt: false,
+  body: "A note with [a link](/art).",
+  pixels: { width: 2000, height: 1600 },
+  ...over,
+});
+
 const withTodos = {
   post: post({
     slug: "todo-post",
@@ -66,6 +83,14 @@ const withTodos = {
     stack: ["TypeScript", "TODO(jorge): the rest of the stack"],
     description: "Kept. TODO(jorge): what you owned.",
     body: "Kept line.\nTODO(jorge): a whole line.",
+  }),
+  art: painting({
+    slug: "todo-painting",
+    title: "Kept title",
+    year: "TODO(jorge): the year",
+    paper: "TODO(jorge): which paper",
+    placeholder: "TODO(jorge): a placeholder",
+    body: "Kept. TODO(jorge): a line about it.",
   }),
 };
 
@@ -93,15 +118,24 @@ describe("llms.txt", () => {
   it("lists every post and work page with its .md URL", () => {
     const posts = getAllPosts();
     const pages = getAllWork();
-    const text = buildLlmsTxt(posts, pages);
+    const text = buildLlmsTxt(posts, pages, getAllArt());
     expect(text.startsWith(`# ${site.name}\n`)).toBe(true);
+    expect(text).toContain(`> ${site.roles}`);
     for (const p of posts) expect(text).toContain(`(${site.url}/blog/${p.slug}.md)`);
     for (const w of pages) expect(text).toContain(`(${site.url}/work/${w.slug}.md)`);
+    for (const p of getAllArt()) expect(text).toContain(`(${site.url}/art/${p.slug}.md)`);
+    // The gallery says once what he paints with.
+    expect(text).toContain("Daniel Smith watercolours:");
+  });
+
+  it("says how a painting was made only when it is set", () => {
+    expect(buildLlmsTxt([], [], [painting({ making: "Two sittings." })])).toContain("Two sittings.");
+    expect(buildLlmsTxt([], [], [painting()])).not.toContain("Two sittings.");
   });
 
   it("drops every TODO, also from the real content", () => {
-    expect(buildLlmsTxt([withTodos.post], [withTodos.work])).not.toContain("TODO(jorge)");
-    expect(buildLlmsTxt(getAllPosts(), getAllWork())).not.toContain("TODO(jorge)");
+    expect(buildLlmsTxt([withTodos.post], [withTodos.work], [withTodos.art])).not.toContain("TODO(jorge)");
+    expect(buildLlmsTxt(getAllPosts(), getAllWork(), getAllArt())).not.toContain("TODO(jorge)");
   });
 });
 
@@ -125,9 +159,36 @@ describe("markdown twins", () => {
     expect(workMd).toContain("Main engineer");
   });
 
+  it("serve a painting as markdown: its facts, its picture and note with absolute links, no TODO", () => {
+    const md = artMarkdown(painting());
+    expect(md.startsWith("# A painting\n")).toBe(true);
+    for (const line of [
+      "- Year: 2026",
+      "- Medium: Watercolour and gouache",
+      "- Paper: Arches, 100% cotton, 300 gsm (140 lb), cold press",
+      "- Size: About 27 × 21.5 cm",
+      "- Paints and pigments: Ultramarine blue (PB29), Titanium white gouache (PW6)",
+      `- Web page: ${site.url}/art/a-painting`,
+      `![Blue washes over a harbour.](${site.url}/art/a-painting.jpg)`,
+      `[a link](${site.url}/art)`,
+    ]) {
+      expect(md).toContain(line);
+    }
+    expect(artMarkdown(withTodos.art)).not.toContain("TODO(jorge)");
+    expect(artMarkdown(painting())).not.toContain("Available:");
+    expect(artMarkdown(painting())).not.toContain("Making:");
+    expect(artMarkdown(painting({ making: "Two sittings." }))).toContain("- Making: Two sittings.");
+    expect(artMarkdown(painting({ available: true }))).toContain(`- Available: yes; to enquire, email ${site.email}`);
+    const fan = artMarkdown(painting({ available: true, fanArt: true, subject: "Majora's Mask", owner: "Nintendo", prints: "https://prints.example/a" }));
+    expect(fan).toContain("- Fan art of Majora's Mask. Characters © Nintendo. Not for sale.");
+    expect(fan).not.toContain("Available:");
+    expect(fan).not.toContain("prints.example");
+  });
+
   it("carry no TODO for any real post or work page", () => {
     for (const p of getAllPosts()) expect(postMarkdown(p), p.slug).not.toContain("TODO(jorge)");
     for (const w of getAllWork()) expect(workMarkdown(w), w.slug).not.toContain("TODO(jorge)");
+    for (const p of getAllArt()) expect(artMarkdown(p), p.slug).not.toContain("TODO(jorge)");
   });
 });
 
@@ -137,6 +198,9 @@ describe("JSON-LD", () => {
     expect(person["@type"]).toBe("Person");
     expect(person.name).toBe(site.name);
     expect(person.sameAs).toEqual(Object.values(site.social));
+    // Both his trades, not the CV's engineering role alone.
+    expect(person.disambiguatingDescription).toBe(site.roles);
+    expect(person.description).toContain(site.roles);
   });
 
   it("describes a post as a BlogPosting without TODOs", () => {
@@ -181,6 +245,27 @@ describe("JSON-LD", () => {
     expect(zonedDate("2026-11-20")).toBe("2026-11-20T00:00:00-06:00");
     expect(blogPostingJsonLd(post()).datePublished).toMatch(/(Z|[+-]\d{2}:\d{2})$/);
     expect(blogPostingJsonLd(post()).author).toMatchObject({ name: site.name, url: site.url });
+  });
+
+  it("describes a painting as a VisualArtwork by the Person, without TODOs", () => {
+    const data = visualArtworkJsonLd(painting({ pixels: { width: 1600, height: 2000 } }));
+    expect(data).toMatchObject({
+      "@type": "VisualArtwork",
+      name: "A painting",
+      url: `${site.url}/art/a-painting`,
+      image: `${site.url}/art/a-painting.jpg`,
+      dateCreated: "2026",
+      artform: "Painting",
+      material: ["Ultramarine blue (PB29)", "Titanium white gouache (PW6)"],
+      artMedium: "Watercolour and gouache",
+      artworkSurface: "Paper (Arches, 100% cotton, 300 gsm (140 lb), cold press)",
+      // The usual sheet, upright like its picture.
+      width: { "@type": "Distance", name: "21.5 cm" },
+      height: { "@type": "Distance", name: "27 cm" },
+      creator: { "@id": personJsonLd()["@id"], name: site.name },
+    });
+    expect(JSON.stringify(visualArtworkJsonLd(withTodos.art))).not.toContain("TODO(jorge)");
+    for (const p of getAllArt()) expect(JSON.stringify(visualArtworkJsonLd(p)), p.slug).not.toContain("TODO(jorge)");
   });
 
   it("cannot close its <script> early", () => {
@@ -242,6 +327,9 @@ describe("robots.txt and the sitemap", () => {
       expect(e.url.startsWith(site.url)).toBe(true);
     }
     expect(entries.length).toBe(new Set(entries.map((e) => e.url)).size);
+    const urls = entries.map((e) => e.url);
+    expect(urls).toContain(`${site.url}/art`);
+    for (const p of getAllArt()) expect(urls).toContain(`${site.url}/art/${p.slug}`);
   });
 });
 

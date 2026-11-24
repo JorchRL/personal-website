@@ -702,6 +702,52 @@
     font-size: 10.5px;
   }
 
+  /* The art: a strip of paintings on the frame's well, each at its own shape
+     and all the same height (each grows in step with its width over its
+     height, --ratio), with its number on /art under it. */
+  .slide-frame.paintings {
+    display: flex;
+    align-items: center;
+  }
+
+  .slide-frame.paintings ol {
+    list-style: none;
+    margin: 0;
+    padding: 0 6%;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 3%;
+  }
+
+  .slide-frame.paintings li {
+    flex: var(--ratio) 1 0;
+    min-width: 0;
+  }
+
+  .slide-frame.paintings a {
+    display: block;
+  }
+
+  .slide-frame.paintings img {
+    height: auto;
+    aspect-ratio: var(--ratio);
+  }
+
+  .slide-frame.paintings .mono {
+    display: block;
+    margin-top: 6px;
+    color: #5b6169; /* --ink-3, darkened for --paper-2 */
+  }
+
+  .slide-frame.paintings a:hover .mono {
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+
   /* Now: its dated lines are the figure. */
   .slide-now ul {
     list-style: none;
@@ -1129,7 +1175,7 @@
   .work .p {
     font-family: var(--mono);
     font-size: 12px;
-    white-space: nowrap;
+    line-height: 1.5;
   }
 
   .work .d {
@@ -1381,14 +1427,46 @@
     grid-column: 4 / span 6;
   }
 
+  /* A lead of several sentences reads as prose, about 65 characters a line. */
+  .page-head .intro .lead.prose {
+    max-width: 65ch;
+    font-size: 19px;
+    line-height: 1.55;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-wrap: pretty;
+  }
+
   .page-head .intro .side {
     grid-column: 1 / span 3;
     grid-row: 1;
   }
 
+  /* A short text beside the title, level with its baseline; below it on a phone. */
+  .page-head .title-row {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    column-gap: var(--gap);
+    align-items: end;
+  }
+
+  .page-head .title-aside {
+    justify-self: end;
+    max-width: 56ch;
+    margin: 0 0 0.4em;
+    font-size: 16px;
+    line-height: 1.5;
+    text-wrap: pretty;
+    color: var(--ink-2);
+  }
+
   /* A section right under a page's head sits closer to it. */
   .page-head + .sec {
     margin-top: 64px;
+  }
+
+  .page-head + .sec.art-sheet {
+    margin-top: 28px;
   }
 
   /* ---------- /blog ---------- */
@@ -2245,6 +2323,7 @@
       grid-column: 2 / span 3;
       grid-row: 1;
       justify-self: end;
+      text-align: right;
     }
 
     .work .t {
@@ -2358,6 +2437,16 @@
 
     .page-head .intro {
       margin-top: 20px;
+    }
+
+    .page-head .title-row {
+      display: block;
+    }
+
+    .page-head .title-aside {
+      max-width: none;
+      margin: 14px 0 0;
+      font-size: 15px;
     }
 
     .page-head .intro .lead,

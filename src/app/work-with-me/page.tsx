@@ -12,6 +12,7 @@ import { breadcrumbJsonLd } from "@/seo/jsonld";
 import { pageMetadata } from "@/seo/metadata";
 import { JsonLd } from "@/ui/JsonLd";
 import { PageHead } from "@/ui/PageHead";
+import { sheetLabel } from "@/ui/sections";
 import { profiles } from "@/ui/Profiles";
 import { SectionHead, sub } from "@/ui/SectionHead";
 import "./work-with-me.css";
@@ -31,7 +32,7 @@ export default function WorkWithMePage() {
     <article className="wwm">
       <JsonLd data={breadcrumbJsonLd([{ name: "Work with me", path: "/work-with-me" }])} />
       <PageHead
-        label="Sheet 05 — Work with me"
+        label={sheetLabel("/work-with-me")}
         status={<span className="status">{site.availability}</span>}
         title="Work with me"
         lead={`${site.role} ${workWithMe.lead}`}

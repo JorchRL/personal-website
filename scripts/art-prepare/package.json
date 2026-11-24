@@ -1,0 +1,10 @@
+{
+  "name": "jrlgs-art-prepare",
+  "private": true,
+  "type": "module",
+  "description": "Makes a painting's web picture and the close-up viewer's maps from a scan, on this machine (pnpm art:prepare).",
+  "dependencies": {
+    "@huggingface/transformers": "4.3.2",
+    "sharp": "0.35.5"
+  }
+}

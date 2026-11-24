@@ -22,7 +22,7 @@ figure:
   alt: "A diagram of Twinteraction's tour engine. Features (the chatbot, quizzes, menus and the LTI bridge) plug into one engine core through its registry. The core runs a tour defined in JSON, and reaches the Matterport SDK, three.js, the host React app and the event system through ports. Outside the app, Moodle courses hold its tours."
   width: 1200
   height: 630
-  caption: "A diagram, not a screenshot. Features plug into one engine core; the core runs a tour written as JSON and reaches what it drives through ports. Moodle sits outside."
+  caption: "Features plug into one engine core, which runs a tour written as JSON and reaches what it drives through ports. Moodle sits outside."
 ---
 
 Twinteraction, built at Dimensione3, turns 3D scans of real places into tours you walk

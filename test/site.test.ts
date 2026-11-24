@@ -1,14 +1,17 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { site } from "@content/site";
+import { laterSheets, sections, sheetLabel, shownSheets } from "@/ui/sections";
 
 describe("site constants", () => {
   it("uses the agreed name, URL, role line and intro", () => {
     expect(site.name).toBe("Jorge Romero");
     expect(site.url).toBe("https://jrlgs.dev");
     expect(site.role).toBe("Software engineer and tech lead.");
-    // The link previews' line: the role line, the proof line's last sentence, what he is open to.
+    expect(site.roles).toBe("Software engineer and watercolour artist.");
+    // The link previews' line: both roles, the proof line's last sentence, what he is open to.
     expect(site.intro).toBe(
-      "Software engineer and tech lead. Now building a game in Godot and an engine in C++. Open to remote roles and contract work.",
+      "Software engineer and watercolour artist. Now building a game in Godot and an engine in C++. Open to remote roles and contract work.",
     );
     expect(site.proof.endsWith("Now building a game in Godot and an engine in C++.")).toBe(true);
   });
@@ -84,5 +87,28 @@ describe("old blog host", () => {
     for (const path of ["/series/game-dev", "/tag/godot", "/page/2", "/a/b/c"]) {
       expect(await follow(path), path).toEqual({ to: "https://jrlgs.dev/blog", status: 301 });
     }
+  });
+});
+
+describe("sheet numbers", () => {
+  // Numbered in one place (src/ui/sections.ts): a sheet's number is its place
+  // among the sheets the build shows, the sections, then /cv and /work-with-me.
+  const sheets = [...sections, ...laterSheets];
+
+  it("are never written by hand: each route asks sheetLabel for its own", () => {
+    for (const { href } of sheets) {
+      const route = `src/app${href}/page.tsx`;
+      const text = readFileSync(route, "utf8");
+      expect(text, route).toContain(`sheetLabel("${href}")`);
+      expect(text, route).not.toMatch(/Sheet \d/);
+    }
+  });
+
+  it.each([
+    ["locally and on a preview", {}, ["01 Work", "02 Blog", "03 Toys", "04 Art", "05 About", "06 CV", "07 Work with me"]],
+    ["on a production deploy, /toys hidden", { VERCEL_ENV: "production" }, ["01 Work", "02 Blog", "03 Art", "04 About", "05 CV", "06 Work with me"]],
+  ])("follow the order of the sheets shown, with no gap (%s)", (_, env, expected) => {
+    expect(shownSheets(env).map((s) => `${s.no} ${s.label}`)).toEqual(expected);
+    expect(shownSheets(env).map((s) => sheetLabel(s.href, env))).toEqual(expected.map((e) => `Sheet ${e.replace(" ", " — ")}`));
   });
 });

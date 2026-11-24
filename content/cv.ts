@@ -1,16 +1,22 @@
 // The CV: /cv and public/cv.pdf are both made from this file (with the
 // dates from each entry's work page; the title, availability, contact details
 // and what he is looking for from site.ts; the hiring terms and his English
-// from hire.ts). After changing it, regenerate the PDF: pnpm build && pnpm cv:pdf.
+// from hire.ts). After changing it, regenerate the PDF: pnpm cv:pdf (LaTeX, via Tectonic).
+// Outcome lines read best at 150 to 215 characters (two lines in the PDF);
+// pnpm cv:pdf lists the ones outside that window.
 
 export type CvEntry = {
   /** Full job title, as on a contract. */
   title: string;
-  /** The real company name. */
+  /** The real company name: the employer, as on the contract. */
   company: string;
+  /** A line under the company, in italics: what the work was on (the app, when it is not the company's name). */
+  context?: string;
+  /** Where the work was done, on the company's row: "Remote". */
+  location?: string;
   /** The work page this entry links to; its `period` gives the dates. */
   work: string;
-  /** Two to four outcome lines. */
+  /** Two to five outcome lines. `**…**` marks a key fact: bold on /cv and in the PDF. */
   outcomes: string[];
 };
 
@@ -27,24 +33,28 @@ export const cv = {
   experience: [
     {
       title: "Software engineer, then tech lead",
-      company: "Whiz.Study",
+      company: "West Palm Test Prep",
+      context: "Whiz.Study, a test-prep app with about 100,000 students when I left",
+      location: "Remote",
       work: "whiz-study",
       outcomes: [
-        "Led five junior engineers in rebuilding a test-prep platform from scratch in Next.js, TypeScript, Drizzle, Zod and Supabase, on a hexagonal design: a domain model with zero dependencies, every third-party service behind an adapter. It had about 100,000 students when I left.",
-        "Designed an exam engine: one generic runtime, each exam a level defined as data, new exam types added as DLCs (APs, MCAT and others), and a plugin API. Built the AI tutor as a plugin whose tool calls act on the exam's UI.",
-        "Designed the contentinator, an LLM pipeline (through OpenRouter, mostly Gemini Flash) that generated exams in batches of 100, checked by an adversarial LLM against exam-writing rubrics, with embeddings and vector search to catch repeats.",
-        "Built Stripe subscriptions, which went from zero to about $5k a month. Added indexes that took database usage from about 99% to about 1%, and fixed nested requests that took Lighthouse scores from about 60–70 to 90+.",
+        "Led **three junior engineers** and mentored **two more junior developers** through the redesign and rebuild of an inherited **300,000+ line** codebase in **about 4 to 6 months**, migrating all users, data and infrastructure.",
+        "Chose a **hexagonal design** (Next.js, TypeScript, Drizzle, Zod, Supabase): a zero-dependency domain, services behind adapters. Indexes cut database usage from **about 99% to 1%**; Lighthouse went from **about 60–70 to 90+**.",
+        "Designed an **exam engine**: one generic runtime, each exam a level defined as data, new exams as DLCs (APs, MCAT and more). Designed its **AI tutor** plugin, built with one other engineer: the **top subscription driver**.",
+        "Designed the contentinator, an **LLM pipeline** checked by an **adversarial LLM** against exam-writing rubrics, with vector search to catch repeats. It produced **75,000+ questions in two months**, saving nearly **$296,000**.",
+        "Built the payments entirely on my own: **Stripe subscriptions, one-time payments and free-trial entitlements**. Subscription revenue went from **zero to about $5k MRR** by the time I left.",
       ],
     },
     {
       title: "Main engineer",
       company: "Dimensione3",
+      location: "Remote",
       work: "twinteraction",
       outcomes: [
-        "Main engineer on Twinteraction, a platform that turns 3D scans of real places into tours people walk through in the browser.",
-        "Re-architected its tour engine, which runs tours defined in JSON, into an engine core with feature plugins. Old and new ran side by side while features moved over one at a time.",
-        "Built new features on it: a chatbot that answers from a knowledge base kept per tour, quizzes, and a bridge to learning platforms over LTI. Integrated our tours with Moodle courses.",
-        "Did most of the maintenance, optimisation and debugging, and ran the Kubernetes setup. Set up unit tests with Vitest in CI, then integration and end-to-end tests.",
+        "Main engineer on **Twinteraction**, a platform that turns **3D scans of real places** into tours people walk through in the browser.",
+        "Re-architected its **tour engine**, which runs tours defined in JSON, into an **engine core with feature plugins**. Old and new ran side by side while features moved over one at a time.",
+        "Built new features on it: a **chatbot** that answers from a knowledge base kept per tour, quizzes, and a bridge to learning platforms over **LTI**. Integrated our tours with **Moodle** courses.",
+        "Did most of the **maintenance, optimisation and debugging**, and ran the **Kubernetes** setup. Set up unit tests with **Vitest in CI**, then integration and end-to-end tests.",
       ],
     },
   ] satisfies CvEntry[],
@@ -53,22 +63,20 @@ export const cv = {
     {
       work: "the-lone-wander",
       outcomes: [
-        "A small 3D Zelda-like in Godot, heading for a public demo.",
-        "Built so far: the host (scene slot, UI stack, pause, saves, named timers), the wanderer's movement, a camera rig with shots and lock-on, menus, the map, and the look's shader, written from an empty file.",
+        "A small **3D Zelda-like in Godot**, heading for a **public demo**. So far: the host (scenes, UI stack, pause, saves, timers), movement, a camera rig with lock-on, menus, the map, and a **shader** written from an empty file.",
       ],
     },
     {
       work: "plain-engine",
       outcomes: [
-        "A game engine written by hand in C++ on macOS, following Handmade Hero.",
-        "The game is a shared library that reloads into the running engine and keeps its state, in memory the platform owns.",
+        "A game engine written **by hand in C++** on macOS, following **Handmade Hero**. The game is a shared library that **reloads into the running engine** and keeps its state, in memory the platform owns.",
       ],
     },
     {
       work: "lumen",
       outcomes: [
-        "A tutor that models a subject as concepts in a prerequisite order and the learner as evidence, and computes what to learn next and why. A working prototype, not yet used by learners.",
-        "A Kotlin modular monolith: a domain with zero dependencies, use cases as the only entry points (web app, command line and MCP), activities as data on a generic engine, and 486 property-based laws. I design and approve each brief; AI coding agents write most of the code.",
+        "A tutor that models a subject as concepts in a prerequisite order and the learner as evidence, and computes **what to learn next and why**. A working prototype, not yet used by learners.",
+        "A Kotlin **modular monolith**: a zero-dependency domain, use cases as the only entry points (web, command line, MCP) and **486 property-based laws**. I design and approve each brief; AI coding agents write most of the code.",
       ],
     },
   ] satisfies CvProject[],

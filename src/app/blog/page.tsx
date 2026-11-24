@@ -4,6 +4,7 @@ import { TodoText } from "@/content/TodoText";
 import { pageMetadata } from "@/seo/metadata";
 import { formatDayMonth, yearOf } from "@/ui/format";
 import { PageHead } from "@/ui/PageHead";
+import { sheetLabel } from "@/ui/sections";
 
 export const metadata = pageMetadata({
   title: "Blog",
@@ -39,7 +40,7 @@ export default function BlogIndex() {
   return (
     <>
       <PageHead
-        label="Sheet 02 — Blog"
+        label={sheetLabel("/blog")}
         status={
           <>
             {posts.length} posts · {span} ·{" "}

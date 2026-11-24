@@ -167,4 +167,4 @@ Help me grow by leaving me some feedback. See you in my next post!
 
 ---
 
-Jorge Romero. Software engineer and tech lead. Now building a game in Godot and an engine in C++. Open to remote roles and contract work. Email: jorch.rl@gmail.com. LinkedIn: https://linkedin.com/in/jorchrl.
+Jorge Romero. Software engineer and watercolour artist. Now building a game in Godot and an engine in C++. Open to remote roles and contract work. Email: jorch.rl@gmail.com. LinkedIn: https://linkedin.com/in/jorchrl.

@@ -36,6 +36,7 @@ describe("core facts", () => {
   const facts = {
     "the time zone": site.timeZone,
     "the role line": site.role,
+    "the role line with both trades": site.roles,
     "what he is open to": site.open,
     "when he can start": site.start,
     "the availability line's overlap": "full overlap with US hours",

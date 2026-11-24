@@ -58,9 +58,25 @@ function Cell({ label, value, grow = 1, last = false }: { label: string; value: 
   );
 }
 
-export async function ogImage({ label, title }: { label: string; title: string }) {
+/** A picture beside the title (a painting): its file as a data URL, and its size in pixels. */
+type Picture = { src: string; width: number; height: number };
+
+/** The picture as a data URL, read from public/: next/og draws it at build time. */
+export async function ogPicture(src: string, size: { width: number; height: number }): Promise<Picture> {
+  const data = await readFile(path.join(process.cwd(), "public", src));
+  const type = /\.png$/i.test(src) ? "png" : /\.webp$/i.test(src) ? "webp" : "jpeg";
+  return { src: `data:image/${type};base64,${data.toString("base64")}`, ...size };
+}
+
+// The picture's box: the middle band's height, and at most half the sheet's width.
+const PICTURE_BOX = { width: 560, height: 392 };
+
+export async function ogImage({ label, title, picture }: { label: string; title: string; picture?: Picture }) {
   const text = stripTodos(title) || site.name;
-  const fontSize = text.length > 90 ? 56 : text.length > 50 ? 68 : text.length > 24 ? 84 : 112;
+  const big = text.length > 90 ? 56 : text.length > 50 ? 68 : text.length > 24 ? 84 : 112;
+  // Beside a picture, the title has half the width.
+  const fontSize = picture ? Math.min(big, text.length > 24 ? 56 : 76) : big;
+  const scale = picture ? Math.min(PICTURE_BOX.width / picture.width, PICTURE_BOX.height / picture.height) : 0;
   const colWidth = (ogSize.width - 2 * MARGIN - (COLS - 1) * GAP) / COLS;
   return new ImageResponse(
     (
@@ -111,25 +127,37 @@ export async function ogImage({ label, title }: { label: string; title: string }
             {site.open}
           </div>
         </div>
-        {/* Label and title */}
-        <div style={{ display: "flex", flexDirection: "column", flexGrow: 1, justifyContent: "center" }}>
-          <div style={{ fontFamily: "IBM Plex Mono", fontSize: 20, letterSpacing: 2.4, color: INK_2 }}>
-            {label.toUpperCase()}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              marginTop: 18,
-              marginLeft: -4,
-              maxWidth: 1000,
-              fontFamily: "Schibsted Grotesk",
-              fontWeight: 800,
-              fontSize,
-              lineHeight: 0.98,
-              letterSpacing: -fontSize * 0.045,
-            }}
-          >
-            {text}
+        {/* Label and title, with the picture on their left when there is one. */}
+        <div style={{ display: "flex", flexGrow: 1, alignItems: "center", gap: 40 }}>
+          {picture && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={picture.src}
+              alt=""
+              width={Math.round(picture.width * scale)}
+              height={Math.round(picture.height * scale)}
+              style={{ border: `1.5px solid ${INK}` }}
+            />
+          )}
+          <div style={{ display: "flex", flexDirection: "column", flexGrow: 1, flexBasis: 0, justifyContent: "center" }}>
+            <div style={{ fontFamily: "IBM Plex Mono", fontSize: 20, letterSpacing: 2.4, color: INK_2 }}>
+              {label.toUpperCase()}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                marginTop: 18,
+                marginLeft: -4,
+                maxWidth: 1000,
+                fontFamily: "Schibsted Grotesk",
+                fontWeight: 800,
+                fontSize,
+                lineHeight: 0.98,
+                letterSpacing: -fontSize * 0.045,
+              }}
+            >
+              {text}
+            </div>
           </div>
         </div>
         {/* Title block */}

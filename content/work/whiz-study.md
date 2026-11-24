@@ -13,25 +13,27 @@ stack:
   - Embeddings and vector search
 description: "A test-prep platform with about 100,000 students when I left. I led its rebuild, and designed its exam engine, its content pipeline and its AI tutor."
 order: 1
-team: Six, five junior engineers and me
+team: "Six: me, three junior engineers and two junior developers I mentored"
 figure:
   src: /work/whiz-study/engine.svg
   alt: "A diagram of the exam engine in three bands. At the top, plugins: the AI tutor, and a slot for the next plugin, which reach the engine through its plugin API. In the middle, the exam engine, one generic runtime. At the bottom, the DLCs, data that meets the DLC contract: SAT, PSAT, APs, MCAT and lessons, each drawn as a small tree."
   width: 1200
   height: 630
-  caption: "A diagram, not a screenshot. One runtime in the middle; exams and lessons come in below as data, and features such as the AI tutor plug in above."
+  caption: "One runtime in the middle. Exams and lessons come in below as data, and features such as the AI tutor plug in above."
 ---
 
-Whiz.Study is a test-prep platform. It started with the SAT. When I left, it had about
-100,000 students.
+Whiz.Study is a test-prep app, made by West Palm Test Prep. It started with the SAT.
+When I left, it had about 100,000 students.
 
-I joined as a software engineer in early 2025. From late 2025 I led a team of five
-junior engineers in rebuilding the app from scratch. I left in September 2026.
+I joined as a software engineer in early 2025, working remotely. From late 2025 I led
+a core team of three junior engineers, and mentored two more junior developers, in redesigning and
+rebuilding the app. The rebuild took about four to six months, including the full
+migration of users, data and infrastructure from the old app. I left in September 2026.
 
 ## The rebuild
 
-The app we inherited was a Next.js app whose server functions read the database
-directly. Its 20 SAT and 20 PSAT exams were made by hand, and held together by sheer
+The app we inherited was a huge, messy codebase of more than 300,000 lines: a Next.js
+app whose server functions read the database directly. Its 20 SAT and 20 PSAT exams were made by hand, and held together by sheer
 willpower.
 
 I chose a hexagonal design. The front end is separate. On the back end, an application
@@ -74,7 +76,8 @@ is searched against them by vector similarity, and when a near match turns up, a
 LLM evaluates it and proposes edits.
 
 The contentinator ran almost entirely on its own. It produced batches of 100 exams and
-100 sets of question-bank questions, and a lot of lessons. We were aiming at the
+100 sets of question-bank questions, and a lot of lessons: more than 75,000 questions in
+two months, nearly $296,000 less than writing them by hand would have cost. We were aiming at the
 largest exam and question bank in the world.
 
 A question's life did not end at approval. We tracked each question's lifetime, so we
@@ -84,7 +87,8 @@ question.
 
 ## The AI tutor: a plugin that acts on the exam
 
-I built the AI tutor on the agent-harness pattern, as a plugin on the exam engine.
+I designed the AI tutor on the agent-harness pattern, as a plugin on the exam engine,
+and built it with one other engineer. It became the platform's top subscription driver.
 Through the plugin API it gets tool calls that act on the exam's UI: cross off answers
 that are wrong, highlight things, open the calculator and plot a function.
 
@@ -99,8 +103,10 @@ exams spaced over it.
 
 ## Payments
 
-My first task when I joined was Stripe payments for subscriptions. Subscriptions went
-from making nothing to about $5k a month by the time I left.
+My first task when I joined was the payments, and I built them entirely on my own:
+Stripe subscriptions, one-time payments and free-trial entitlements. Subscription
+revenue went from nothing to about $5k MRR (monthly recurring revenue) by the time I
+left.
 
 ## Performance
 
@@ -113,7 +119,8 @@ platform's Lighthouse scores from about 60–70 to 90+.
 
 ## Leading the team
 
-The team was five engineers and me, all juniors except me. I ran a weekly tech meeting.
+The core team was three junior engineers and me, and I also mentored two more junior
+developers. I ran a weekly tech meeting.
 I introduced topics and ways of thinking, such as abstraction and ports and adapters,
 and assigned readings for the week, which we discussed.
 

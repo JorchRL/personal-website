@@ -1,12 +1,13 @@
 // JSON-LD for search engines and AI search. Site-wide (layout.tsx): the
 // WebSite and the Person who writes it, linked by @id. Per page: a
-// ProfilePage (/about), a BlogPosting (each post) and a BreadcrumbList
-// (posts and work pages). Render with <JsonLd data={…} /> (src/ui/JsonLd.tsx).
+// ProfilePage (/about), a BlogPosting (each post), a VisualArtwork (each
+// painting) and a BreadcrumbList (posts, work pages and paintings). Render with <JsonLd data={…} /> (src/ui/JsonLd.tsx).
 
 import { site } from "@content/site";
+import { knownYear, mediumLabel, paintsWithPigments, paperPlain, sizeCm, type Painting } from "@/content/art";
 import type { PostMeta } from "@/content/posts";
 import { stripTodos } from "@/content/todos";
-import { absoluteUrl, postPath } from "./urls";
+import { absoluteUrl, artPath, postPath } from "./urls";
 
 type JsonLd = Record<string, unknown>;
 
@@ -22,6 +23,7 @@ export function personJsonLd() {
     url: site.url,
     email: `mailto:${site.email}`,
     jobTitle: "Software engineer",
+    disambiguatingDescription: site.roles,
     description: stripTodos(site.intro),
     homeLocation: { "@type": "Place", name: site.location },
     sameAs: Object.values(site.social),
@@ -101,6 +103,38 @@ export function blogPostingJsonLd(post: PostMeta) {
     keywords: post.tags.map(stripTodos).filter(Boolean),
     inLanguage: "en",
     author: { "@type": "Person", "@id": PERSON_ID, name: site.name, url: site.url },
+    isPartOf: { "@id": WEBSITE_ID },
+  } satisfies JsonLd;
+}
+
+/**
+ * A painting: what it is, size, medium, paper and
+ * pigments, and who painted it. Fan art says so (genre).
+ */
+export function visualArtworkJsonLd(painting: Painting) {
+  const url = absoluteUrl(artPath(painting.slug));
+  const { width, height } = sizeCm(painting);
+  const note = stripTodos(painting.body);
+  const year = knownYear(painting);
+  const paints = paintsWithPigments(painting);
+  const distance = (cm: number) => ({ "@type": "Distance", name: `${cm} cm` });
+  return {
+    "@context": "https://schema.org",
+    "@type": "VisualArtwork",
+    name: stripTodos(painting.title) || painting.slug,
+    url,
+    mainEntityOfPage: url,
+    image: absoluteUrl(painting.image),
+    ...(note ? { description: note } : {}),
+    ...(year ? { dateCreated: String(year) } : {}),
+    artform: "Painting",
+    ...(painting.fanArt ? { genre: "Fan art" } : {}),
+    artMedium: mediumLabel(painting),
+    artworkSurface: `Paper (${paperPlain(painting)})`,
+    ...(paints.length ? { material: paints } : {}),
+    width: distance(width),
+    height: distance(height),
+    creator: { "@type": "Person", "@id": PERSON_ID, name: site.name, url: site.url },
     isPartOf: { "@id": WEBSITE_ID },
   } satisfies JsonLd;
 }

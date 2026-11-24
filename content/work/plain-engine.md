@@ -19,7 +19,7 @@ figure:
   alt: "A diagram of Plain Engine's boundary. At the top, the game: a shared library loaded at run time, rebuilt on save and reloaded while running with its state kept. It talks to the engine through a C ABI. In the middle, the platform layer, an executable that owns main, the loop and the reload by file identity. At the bottom, what the platform owns: the memory (one mmap block holding the game's state), the backbuffer the game writes pixels into, and raylib for the window, input and GL context."
   width: 1200
   height: 630
-  caption: "A diagram, not a screenshot. The game is a library the platform layer loads and reloads; the platform owns the memory, the pixels and the window."
+  caption: "The game is a library that the platform layer loads and reloads. The platform owns the memory, the pixels and the window."
 ---
 
 Plain Engine is a game engine and a game I am writing by hand, to learn, not to ship.

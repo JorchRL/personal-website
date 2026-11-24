@@ -1,0 +1,557 @@
+/* /art's "Paints": a colour chart under the head, one swatch per
+   paint, each opening its pigment's sheet
+   (src/art/pigments/PaintsAndPaper.tsx). The open sheet is a drawer that
+   slides out from under the chart over the page, as wide as it, ruled like a
+   spec sheet. Without
+   JavaScript, a <noscript> style in the component turns the chart into a list
+   whose sheets open in place. */
+
+.pig {
+  margin: 40px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--hair);
+  row-gap: 14px;
+  align-items: baseline;
+}
+
+.pig-title {
+  grid-column: 1 / span 3;
+  margin: 0;
+  font-weight: 400;
+}
+
+.pig-drawn {
+  grid-column: 4 / span 7;
+  margin: 0;
+  color: var(--ink-3);
+}
+
+.pig + .sec,
+.pig ~ .art-views {
+  margin-top: 40px;
+}
+
+/* ---------- the chart ---------- */
+
+.pig-strip {
+  grid-column: 1 / -1;
+  position: relative;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  border-top: 2px solid var(--rule);
+  border-bottom: 1px solid var(--hair);
+}
+
+.pig-cell {
+  min-width: 0;
+  border-left: 1px solid var(--hair);
+}
+
+.pig-cell:first-child {
+  border-left: 0;
+}
+
+.pig-sum {
+  display: block;
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 8px 9px;
+  border-bottom: 2px solid transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pig-sum::-webkit-details-marker,
+.pig-sum::marker {
+  display: none;
+  content: "";
+}
+
+.pig-sum:focus-visible {
+  outline-offset: -2px;
+}
+
+.pig-chip {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.pig-chip svg,
+.pig-chip img,
+.pig-big-swatch {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 120 / 150;
+  object-fit: cover;
+}
+
+.pig-stripe {
+  fill: var(--ink);
+}
+
+.pig-no,
+.pig-code {
+  display: block;
+  color: var(--ink-3);
+}
+
+.pig-no {
+  font-size: 10.5px;
+}
+
+.pig-name {
+  display: block;
+  margin: 1px 0 2px;
+  font-size: 13.5px;
+  line-height: 1.25;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  overflow-wrap: anywhere;
+}
+
+.pig-code {
+  font-size: 10.5px;
+  overflow-wrap: anywhere;
+}
+
+.pig-sum:hover .pig-name {
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+/* The open swatch: an accent rule under it, pointing at its sheet. */
+.pig-item[open] > .pig-sum {
+  border-bottom-color: var(--accent);
+}
+
+.pig-item[open] > .pig-sum .pig-no {
+  color: var(--accent-ink);
+}
+
+/* ---------- a pigment's sheet ---------- */
+
+/* A closed <details> keeps its content laid out (hidden, and contained, so the
+   sheet would be placed against the closed box): take it out instead. */
+.pig-item:not([open]) > .pig-sheet {
+  display: none;
+}
+
+/* The open sheet is a drawer under the chart, over the page below it, so
+   opening, switching or closing one moves nothing. .pig-sheet is its window:
+   out of flow, as wide as the chart, starting just under the chart's bottom
+   rule and clipping what is above its top edge; .pig-drawer is the paper inside
+   it, which slides down out of that edge when a sheet opens from closed.
+   Switching to another swatch swaps the content in place, without the slide. */
+.pig-sheet {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 1px);
+  overflow: clip;
+}
+
+.pig-drawer {
+  padding: 14px 0 18px;
+  background: var(--paper);
+  border-top: 2px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+}
+
+/* Live, a sheet taller than the screen scrolls inside the drawer, its head
+   (the name and Close) kept at the top. */
+[data-live] .pig-drawer {
+  max-height: calc(100svh - 56px);
+  overflow-y: auto;
+  padding-top: 0;
+}
+
+[data-live] .pig-sheet-head {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  padding-top: 14px;
+  background: var(--paper);
+}
+
+/* Which swatch the drawer belongs to: an accent tab on its top rule, under that
+   swatch's column, continuing the swatch's accent underline. */
+.pig[data-open] .pig-strip::after {
+  content: "";
+  position: absolute;
+  z-index: 21;
+  top: 100%;
+  left: 0;
+  width: var(--pig-mark-w, 0);
+  /* Moved by a transform, so its glide is not a layout shift. */
+  transform: translateX(var(--pig-mark-x, 0));
+  height: 3px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Before the live part runs, every opening slides; after, only an opening
+     from closed (data-entering), never a switch between swatches. */
+  .pig:not([data-live]) .pig-item[open] .pig-drawer,
+  .pig[data-entering] .pig-item[open] .pig-drawer {
+    animation: pig-drawer-in 200ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+
+  /* Switching swatches, the tab glides to the new one. */
+  .pig[data-glide] .pig-strip::after {
+    transition:
+      transform 180ms cubic-bezier(0.2, 0.7, 0.3, 1),
+      width 180ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+
+  @keyframes pig-drawer-in {
+    from {
+      transform: translateY(-100%);
+    }
+  }
+}
+
+.pig-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--hair);
+}
+
+/* The swatch's number, as on the open swatch. */
+.pig-head-no {
+  color: var(--accent-ink);
+}
+
+/* Without JavaScript there is nothing for Close to do (see the component). */
+.pig-close {
+  display: none;
+  align-items: baseline;
+  gap: 6px;
+  padding: 5px 9px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+[data-live] .pig-close {
+  display: inline-flex;
+}
+
+.pig-close:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pig-sheet-body {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 18px var(--gap);
+  padding-top: 16px;
+}
+
+.pig-big {
+  grid-column: 1 / span 2;
+  margin: 0;
+  position: relative;
+}
+
+.pig-big figcaption {
+  margin-top: 8px;
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+.pig-id {
+  grid-column: 3 / span 5;
+  min-width: 0;
+}
+
+.pig-id h3 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  line-height: 1.05;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.pig-chem {
+  display: grid;
+  grid-template-columns: 9.5em minmax(0, 1fr);
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.pig-chem + .pig-chem {
+  margin-top: 14px;
+}
+
+.pig-chem dt,
+.pig-chem dd {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.pig-chem dt {
+  padding-top: 8px;
+}
+
+.pig-chem dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.pig-ci {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pig-common {
+  color: var(--ink-2);
+}
+
+.pig-formula {
+  font-family: var(--mono);
+  font-size: 13px !important;
+  font-feature-settings: "zero" 1;
+}
+
+.pig-props-col {
+  grid-column: 8 / span 5;
+  min-width: 0;
+}
+
+.pig-props {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid var(--rule);
+}
+
+.pig-props caption {
+  text-align: left;
+  padding: 0 0 6px;
+}
+
+.pig-props th,
+.pig-props td {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--hair);
+  text-align: left;
+  vertical-align: baseline;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.pig-props th {
+  width: 9.5em;
+  font-size: 11px;
+}
+
+.pig-props td:nth-child(2) {
+  width: 6.5em;
+}
+
+/* Bar marks: a square per step of the scale, filled up to the rating. */
+.pig-marks {
+  display: inline-flex;
+  gap: 3px;
+  vertical-align: -1px;
+}
+
+.pig-marks i {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--ink);
+}
+
+.pig-marks i.on {
+  background: var(--ink);
+}
+
+.pig-marks.none {
+  color: var(--ink-3);
+}
+
+.pig-text {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pig-text .label {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.pig-check mark.todo {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.pig-ref {
+  margin-left: 2px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--ink-3);
+  vertical-align: 0.5em;
+  line-height: 0;
+}
+
+.pig-sources {
+  display: flex;
+  gap: 6px 18px;
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hair);
+}
+
+.pig-sources .label {
+  flex: none;
+  padding-top: 1px;
+}
+
+.pig-sources ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  color: var(--ink-2);
+}
+
+.pig-sources .n {
+  margin-right: 5px;
+  color: var(--ink-3);
+}
+
+.pig-sources a {
+  text-decoration-line: underline;
+  text-decoration-color: var(--hair);
+  text-underline-offset: 0.2em;
+}
+
+.pig-sources a:hover {
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- tablet ---------- */
+
+@media (max-width: 1100px) {
+  .pig-strip {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .pig-cell:nth-child(6n + 1) {
+    border-left: 0;
+  }
+
+  .pig-cell:nth-child(n + 7) {
+    border-top: 1px solid var(--hair);
+  }
+
+  .pig-big {
+    grid-column: 1 / span 3;
+  }
+
+  .pig-id {
+    grid-column: 4 / span 9;
+  }
+
+  .pig-props-col {
+    grid-column: 4 / span 9;
+  }
+}
+
+/* ---------- phone ---------- */
+
+@media (max-width: 700px) {
+  .pig-title,
+  .pig-drawn {
+    grid-column: 1 / -1;
+  }
+
+  .pig-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pig-cell:nth-child(n) {
+    border-left: 1px solid var(--hair);
+    border-top: 0;
+  }
+
+  .pig-cell:nth-child(4n + 1) {
+    border-left: 0;
+  }
+
+  .pig-cell:nth-child(n + 5) {
+    border-top: 1px solid var(--hair);
+  }
+
+  .pig-sum {
+    padding: 8px 4px 7px 6px;
+  }
+
+  .pig-name {
+    font-size: 12px;
+    overflow-wrap: normal;
+    hyphens: auto;
+  }
+
+  /* The open swatch is right above its sheet: no second, larger copy. */
+  .pig-big {
+    display: none;
+  }
+
+  .pig-sheet-body {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pig-id,
+  .pig-props-col {
+    grid-column: 1 / -1;
+  }
+
+  .pig-chem {
+    grid-template-columns: 7.5em minmax(0, 1fr);
+  }
+
+  /* Fixed columns, so a long label or rating wraps instead of widening the table. */
+  .pig-props {
+    table-layout: fixed;
+  }
+
+  .pig-props th {
+    width: 36%;
+    overflow-wrap: anywhere;
+  }
+
+  .pig-props td:nth-child(2) {
+    width: 26%;
+  }
+
+  .pig-sources {
+    flex-direction: column;
+  }
+
+  .pig-sources ol {
+    flex-direction: column;
+  }
+}

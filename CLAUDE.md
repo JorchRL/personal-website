@@ -2,8 +2,8 @@
 
 Jorge Romero's personal site. Its job: get him contacted about remote software
 engineering roles (ideally game development) and contract work. The home page is a
-document of numbered sections (each a widget); work, blog and about are one click
-away on any device. Under the first screen, 01 Showcase is a deck of slides, one at a
+document of numbered sections (each a widget); work, art, blog and about are one
+click away on any device. Under the first screen, 01 Showcase is a deck of slides, one at a
 time under a tab bar: a few of his best things (`content/showcase.ts`), moved sideways
 only when the visitor asks (see "The home page's showcase"); 02 Two doors and 03
 Contact follow.
@@ -23,7 +23,8 @@ Contact follow.
    services; every route is static.
 4. Never change Jorge's words in imported posts; fix only how they render.
 5. The bar for a release: on mobile, Lighthouse performance, accessibility and SEO at
-   95 or more on the home page and a long post (`pnpm verify`), and no TODO left.
+   95 or more on the home page, a long post, /art and a painting (`pnpm verify`), and
+   no TODO left (so no placeholder painting).
 6. This repository is public. Private notes (plans, reviews, reports, remarks on what
    is weak or unconfirmed) stay out of it: `docs/superpowers/`, `docs/first-pass-report.md`
    and `TODO-REPORT.md` are git-ignored for that reason.
@@ -40,8 +41,10 @@ STRICT_TODOS=1 pnpm build   # the production build, locally: fails while any TOD
 STRICT_DRAFTS=1 pnpm build  # fails while any post has draft: true (set it on Vercel to make a draft block a deploy)
 pnpm verify   # with `pnpm start` running: no-JS, 360 px, wide-screen and Lighthouse checks;
               # screenshots into docs/screenshots/ (once: pnpm exec playwright install chromium)
-pnpm cv:pdf   # after pnpm build: print /cv to public/cv.pdf (or: pnpm cv:pdf <url of a
-              # running server>); run it on a Mac, and after every change to the CV's content
+pnpm art:prepare <scan.png> --slug <slug>   # a painting's picture and close-up files
+              # (see "How to add a painting"; local only, the scan is never uploaded)
+pnpm cv:pdf   # typeset public/cv.pdf with LaTeX from the CV's content (needs Tectonic:
+              # brew install tectonic); run it after every change to the CV's content
 ```
 
 Node 22.18 or later (`.nvmrc`; `engines` in `package.json` gives Vercel 22.x): the TODO
@@ -58,44 +61,58 @@ built (see "Drafts").
 `/cv` and `public/cv.pdf` come from one object, `getCv()` in `src/content/cv.ts`:
 `content/cv.ts` (job titles, companies, outcome lines, the summary, skills),
 the dates, roles and stacks of the work pages it names, the core facts in
-`content/site.ts` (the title is the role line without its full stop; the availability
+`content/site.ts` (the title is the engineering role line, `role`, without its full stop; the availability
 line, under it; contact details; what he is looking for) and the hiring terms in
 `content/hire.ts` (his English is the CV's "Languages" line). Each entry's id is its
-work page's slug (`/cv#twinteraction`), and a work page's CV button opens it. `scripts/cv-pdf.mjs`
-prints the page with Playwright: its print styles (`src/app/cv/cv.css`) set one column,
-black on white, in Arial (Chromium writes the site's variable font into a PDF as Type 3
-glyphs, which text extractors and applicant tracking systems read badly), the contact
-details in the body, no running header or footer, Letter size, TODO marks visible.
-Before printing, it makes every site link absolute to the page's canonical origin
-(`https://jrlgs.dev`), so the PDF's links work whichever server printed it; a test fails
-on `localhost` or `127.0.0.1` in the PDF's text or links (`pdfLinks` in `test/pdf-text.ts`).
-Printed punctuation between a label and its value is real text (`Sep` in
-`src/app/cv/page.tsx`, hidden on screen), and list dashes are inline, so extracted
-text reads "Email: …", "Main engineer, Dimensione3" and "– Outcome" in order (check
-with `pdftotext public/cv.pdf -`).
-The page prints a hash of the CV (`rev. …`); `test/pages.test.ts` reads the PDF's text
-back (`test/pdf-text.ts`) and fails while that hash is old, while the PDF is over 2.5 MB,
-or when its text lacks the name, the contact details or an entry. So after editing
-the CV's content, a work page's frontmatter, `site.ts`, `home.ts` or `hire.ts`:
-`pnpm build && pnpm cv:pdf`,
-then commit `public/cv.pdf` with the change.
+work page's slug (`/cv#twinteraction`), and a work page's CV button opens it. In an
+outcome line, `**…**` marks a key fact: bold on /cv and in the PDF.
+
+`/cv` reads like the PDF: a white sheet in Latin Modern (`src/app/cv/fonts.ts`:
+self-hosted woff2 subsets in `src/app/cv/fonts/`, loaded by `next/font/local` on /cv
+only; GUST Font License), with the same layout as below, plus the summary and the
+hiring terms the PDF leaves out. The meta row and the buttons above the sheet keep the
+site's look; printed from a browser, the sheet prints alone.
+
+`scripts/cv-pdf.mjs` (`pnpm cv:pdf`) typesets the PDF with LaTeX: it calls `getCv()`
+directly (`scripts/lib/ts-paths.mjs` lets Node resolve the `@/` aliases), writes a
+LaTeX document (`scripts/lib/cv-tex.mjs`, the layout) and compiles it with Tectonic, a
+self-contained LaTeX engine (`brew install tectonic`; its first run downloads the packages).
+It is a local step: the site's build never needs LaTeX, so commit `public/cv.pdf`.
+The layout is a one-page résumé for applicant tracking systems: Letter, Latin Modern,
+one column, each company once (its location on the right, an optional context line in
+italics, `context` and `location` in `content/cv.ts`) with its role and dates under it, bullets (U+2022) with
+key facts in bold, skills as "Group: items" lines, contact links as plain text joined
+by " | ", every link absolute to `https://jrlgs.dev`. It leaves out the summary and the
+hiring terms to fit one page (the header's availability line carries the essentials;
+/cv shows both). Bullets read best at 150 to 215 characters (two lines); `pnpm cv:pdf`
+lists the ones outside that window, and warns when the PDF runs past one page.
+The PDF prints a hash of the CV (`rev. …`); `test/pages.test.ts` reads the PDF's text
+back (`test/pdf-text.ts`; check by eye with `pdftotext public/cv.pdf -`) and fails
+while that hash is old, while the PDF is over 2.5 MB or more than one page, when its
+text lacks the name, the contact details, an entry or a bullet, or when a link names a
+local server. So after editing the CV's content, a work page's frontmatter, `site.ts`
+or `hire.ts`: `pnpm cv:pdf`, then commit `public/cv.pdf` with the change.
 
 ## Map
 
 ```
 content/            Everything Jorge writes. The only place facts live.
-  site.ts           The core facts, each written once: name, URL, the role line, the
-                    proof line, what he is open to, the availability line, what he is
-                    looking for, city, location, time zone, the intro (meta
-                    description, built from the others), email, social links. Every
+  site.ts           The core facts, each written once: name, URL, the role lines
+                    (`roles`, both trades, on the home page, /about, link previews,
+                    JSON-LD and llms.txt; `role`, engineering alone, on the CV, its
+                    PDF, /work-with-me and a post's end), the proof line, what he
+                    is open to, the availability line, what he is looking for,
+                    city, location, time zone, the intro (meta description, built
+                    from the others), email, social links. Every
                     page, the CV and PDF, JSON-LD and the machine forms read them from
                     here; test/core-facts.test.ts fails on a copy elsewhere. In
                     about.md, write one as {{site.lookingFor}} (src/content/pages.ts).
   home.ts           The home page's words: the two doors' titles and the clients'
                     line, the contact notes.
   showcase.ts       The home page's showcase: its slides in order, each naming a work
-                    page, a post or the Now list, with an optional tab name and
-                    one-line note. A name that names nothing fails the build.
+                    page, a post, the Now list or the art (a few paintings), with an
+                    optional tab name and one-line note. A name that names nothing
+                    fails the build.
   cv.ts             The CV (/cv and public/cv.pdf): job titles, companies, outcome
                     lines, the summary (the CV's own), projects, skills.
   hire.ts           How to hire him: contract route, time zone, overlap, English (the
@@ -114,6 +131,17 @@ content/            Everything Jorge writes. The only place facts live.
                     in public/blog/<slug>/).
   work/<slug>.md    Work pages: whiz-study, twinteraction, the-lone-wander, plain-engine,
                     lumen. Each opens with a diagram of its architecture (public/work/<slug>/).
+  art/<slug>.md     Paintings (see "How to add a painting"); their pictures and the
+                    close-up viewer's files in public/art/.
+  materials.ts      What he paints with, written once: papers, his usual sheet,
+                    paints and their pigments' codes. A painting names its paper and
+                    paints by key.
+  pigments.ts       What each paint is made of, for /art's swatches: per pigment (by
+                    Colour Index code) its chemistry, formula, class and history; per
+                    paint the maker's ratings, how it behaves, its swatch colours and
+                    an optional scanned swatch. Every fact names its
+                    sources (`sources`, linked on the page).
+  gallery.ts        The art section's words: /art's intro, the showcase slide's name and line.
   about.md, now.md  The about page's opening text, and the showcase's Now slide (one
                     dated line per project, linked to its work page's next steps;
                     shown only while content/showcase.ts lists { kind: "now" }).
@@ -131,7 +159,8 @@ src/ui/             Shared pieces: Header (the running head) and NavLinks, Foote
                     around its body, for both kinds), Profiles, JsonLd, TrackContacts and
                     contactEvents.ts (the contact events sent to Vercel Analytics).
 src/content/        Loaders: the only code that reads content/ (posts.ts, work.ts,
-                    schema.ts, pages.ts, skills.ts, cv.ts), todos.ts, slug.ts (heading
+                    art.ts, schema.ts, pages.ts, skills.ts, cv.ts), image-size.ts (a
+                    picture's size from its file's header), todos.ts, slug.ts (heading
                     ids: a work page's h2–h6 get ids from their text, so other pages
                     link to a section; a test checks every such link), Markdown.tsx (markdown → HTML),
                     Mdx.tsx (an .mdx post → HTML, at build time), mdx-components.tsx
@@ -145,20 +174,32 @@ src/content/        Loaders: the only code that reads content/ (posts.ts, work.t
                     TodoText.tsx (a frontmatter string with its TODOs marked).
 src/seo/            Machine-readable forms: pageMetadata (title, canonical, Open
                     Graph), JSON-LD, RSS, llms.txt, the markdown twins, Open Graph
-                    images (fonts in src/seo/fonts/). Twins are served at
-                    /blog/<slug>.md and /work/<slug>.md by src/app/md/ via a rewrite
+                    images (fonts in src/seo/fonts/; a painting's shows the
+                    painting). Twins are served at /blog/<slug>.md,
+                    /work/<slug>.md and /art/<slug>.md by src/app/md/ via a rewrite
                     in next.config.ts, which also redirects the old site's
                     /projects pages to /work; /cv.md, /work-with-me.md and
                     /about.md have their own routes (src/app/<page>.md/).
+src/art/            The art section's live parts: viewer/ (the close-up viewer on a
+                    painting's page), Offer.tsx (the enquiry and the print link),
+                    pigments/ (/art's "Paints": a swatch per paint, each opening
+                    its pigment's sheet).
 src/widgets/        The home document: one folder per widget (intro, showcase, doors,
                     contact), the registry, Grid (the cells, numbered), showcase (01
                     Showcase: its slides, from content/showcase.ts) and Deck (slides
                     under a tab bar, in a sideways scroller; its numbers in
                     deckGeometry.ts).
 scripts/            check.mjs (pnpm check), todo-report.mjs (pnpm todos),
-                    verify.mjs (pnpm verify; lib/edge-clip.mjs, its wide-screen check),
-                    cv-pdf.mjs (pnpm cv:pdf) and one-off scripts.
-public/cv.pdf       The CV as a PDF, printed from /cv by pnpm cv:pdf. Never edit by hand.
+                    art-prepare/ (pnpm art:prepare: a painting's picture and close-up files from
+                    its scan; its own package.json, so its depth model never installs
+                    on a deploy),
+                    verify.mjs (pnpm verify; lib/edge-clip.mjs, its wide-screen check;
+                    lib/viewer-shift.mjs and viewer-shift.mjs, the close-up's movement check;
+                    lib/pigment-drawer.mjs and pigment-drawer.mjs, the swatches' drawer's),
+                    cv-pdf.mjs (pnpm cv:pdf; lib/cv-tex.mjs, the CV's LaTeX layout;
+                    lib/ts-paths.mjs, the aliases for scripts that load src/) and
+                    one-off scripts.
+public/cv.pdf       The CV as a PDF, typeset from the CV's content by pnpm cv:pdf. Never edit by hand.
 test/               vitest: content checks, the widget registry and the sitemap,
                     LiveSlot (jsdom), the showcase (its items, its HTML, its tabs in
                     jsdom), the CV, /about and /work-with-me with their machine forms
@@ -166,7 +207,15 @@ test/               vitest: content checks, the widget registry and the sitemap,
                     test/fixtures/mdx/blog/, never published), drafts
                     (test/drafts.test.ts), the guided-building post's figures
                     (test/guided-post.test.ts) and the wide-screen rule
-                    (test/edge-clip.test.ts).
+                    (test/edge-clip.test.ts), the paintings and the placeholder
+                    rule, the enquiry and fan art (test/art.test.ts), the close-up
+                    viewer's switches and its code kept out of the first load
+                    (test/viewer.test.ts), the sheet numbers (test/site.test.ts), the
+                    pigment facts and their sources (test/pigments.test.ts) and the
+                    swatches' sheets from the keyboard and the mouse
+                    (test/pigment-chart.test.ts, jsdom).
+public/art/         The paintings' pictures (content/art/ names them), and each one's
+                    close-up files in public/art/<slug>/ (pnpm art:prepare).
 docs/screenshots/   The pages at 390 px and 1440 px, written by pnpm verify (the home
                     page at 1440 px: its first screen, then one per slide and section).
 ```
@@ -188,7 +237,7 @@ part (running head, title block, sections, rows, the first screen, plates, prose
   printed grid). Code colours: `--code-*`, each at least 5:1 on `--paper-2`.
 - Fonts: Schibsted Grotesk (display and text, variable 400–900) and IBM Plex Mono
   (labels, figures, annotations, code; 400 and 600), loaded with `next/font` in
-  `layout.tsx`. Open Graph images use the same faces from `src/seo/fonts/`.
+  `layout.tsx`. /cv's sheet alone is set in Latin Modern, like the PDF. Open Graph images use the same faces from `src/seo/fonts/`.
 - The grid: `.grid` is 12 columns (4 on a phone, ≤ 700 px), with the columns printed
   faintly behind the page (`.page::before`). Tablet: ≤ 1100 px.
 - Pieces: `.sec` + `<SectionHead>` (a numbered section: 2 px rule, number, title,
@@ -308,6 +357,145 @@ picture, an aside a quote.
    dated milestones) is plain Markdown.
 3. Run `pnpm check`.
 
+## How to add a painting
+
+A painting is one file, `content/art/<slug>.md`, its picture `public/art/<slug>.jpg`, and
+the close-up viewer's files in `public/art/<slug>/`. /art shows the paintings newest first
+(by `year`), numbered on Art's sheet: 4.1, 4.2… while Art is Sheet 04 (3.1… while /toys
+is hidden). Each gets its own page, link preview, markdown twin, sitemap and llms.txt
+entry, and VisualArtwork JSON-LD, all from that one file.
+
+A placeholder painting (a dummy picture, not his) carries `placeholder: "TODO(jorge): …"`,
+so a production build fails while one is left (test/art.test.ts states the rule). The
+first four were replaced by his scans on 2026-11-23. A portrait scan gets its sizes by
+its longer side: `--lamp-sizes` (and `--layer-sizes`) as the widths that make the long
+side 3072 and 2048 (the viewer picks a size by its longer side, `pick` in
+`src/art/viewer/maps.ts`). When the cut by depth alone runs through the subject
+(`cuts.png`), give it `--layers 1` (the Lamp alone) until it has a recipe.
+
+1. Scan the painting: 600 dpi, PNG, the whole sheet, no auto-crop or auto-colour. The
+   slug is the title in lower case with hyphens: `harbour-at-dusk`.
+2. Run `pnpm art:prepare <scan.png> --slug harbour-at-dusk`. It runs on this machine
+   only (the scan is never uploaded; the first run downloads the depth model's weights,
+   about 100 MB, into `scripts/art-prepare/.model-cache/`, and installs the tool's own
+   packages). It writes the picture, `public/art/harbour-at-dusk.jpg`, and the viewer's
+   files, `public/art/harbour-at-dusk/`: the scan for the Lamp (`lamp/`, at 3072 and
+   2048 px; the viewer estimates the paper's relief from it) and the Layers (`layers/`:
+   the cut-out cards, the bare paper, the painting with its paper filled in, at 3072 and
+   1536 px, and the depth, `height.webp`). It prints their size (about 9 MB on disk; a
+   visitor loads one effect at one size, 2 to 3 MB).
+3. Look at `.art-work/harbour-at-dusk/cuts.png`: one colour a layer, white for the bare
+   paper. Without a recipe the layers are cut by depth alone; if a cut runs through
+   something that should move as one piece, move the cuts and run it again (it reuses
+   the depth, so it is quick): `--cuts 0.3,0.6,0.85` (depths from 0 at the back to 1 at
+   the front; the ones used are in `.art-work/<slug>/cuts.json`). `--layers 3` makes
+   fewer cards; `--layers 1` gives the Lamp alone.
+4. Better layers come from a recipe, `scripts/art-prepare/recipes/<slug>.json`, used
+   whenever it exists (Majora's Mask has one): rough regions drawn by hand (polygons in
+   pixels of the scan at 1536 px wide), rules that give a pixel its layer when it is in
+   a region and deeper than a threshold, and each layer's depth in the box, speck
+   radius, outline and backlit rim (see `labelsFromRecipe` in `layers.mjs`). Run the
+   tool again after editing it.
+5. Create `content/art/harbour-at-dusk.md` (or rename a placeholder's file, then delete
+   its `public/art/<old-slug>.placeholder.jpg` and `public/art/<old-slug>/`). In the
+   frontmatter, set:
+   - `title`, `year`;
+   - `image: /art/harbour-at-dusk.jpg` and `alt` (what the picture shows, for someone
+     who cannot see it);
+   - `paper` (`baohong` or `arches`) and `available` (`true` shows "Interested in this
+     painting? Email me", the subject "Painting: <title> (<year>)"; nothing is for sale
+     for now, so every painting says `false`);
+   - optional: `paints` (keys from `content/materials.ts`; the page lists their
+     pigments), `medium` (when the paints do not say it all, e.g. "Watercolour and
+     ink"), `size` (`{ width: 30, height: 23 }` in cm; leave it out for the usual
+     sheet), `fanArt: true` (someone else's character: marked "Fan art", never offered
+     or printed; it also needs `subject` and `owner`, for the label "Fan art of <subject>.
+     Characters © <owner>. Not for sale."), `prints: https://…` (a "Get a print" link, shown only when set), `making` (one line on how it was made, in the facts block, the twin and llms.txt only when set).
+6. Delete the `placeholder:` line if it was a placeholder. Under the frontmatter, write a
+   short note in your own words, or nothing.
+7. Run `pnpm check`. It fails on a missing field, a paint or paper not in
+   `content/materials.ts`, fan art without its subject or owner, a missing
+   picture or map, or a file in `public/art/` that no painting uses.
+
+A missing fact can wait as a TODO: `year` and `paper` each take a quoted
+`"TODO(jorge): …"` (Majora's Mask has them until he fills them in).
+
+A new paint or paper goes in `content/materials.ts` once, with its pigments' codes; /art's
+line on what he paints with follows. Then give it its entry in `content/pigments.ts`
+(the same pigment codes, each described under `pigments`, the maker's ratings, one
+sentence on how it behaves, a source for every fact): `pnpm check` fails until it has one.
+`pigmentsCheck` in `content/materials.ts` is the TODO that marks the codes as
+unconfirmed; set it to `""` once they match the tube labels, and delete each paint's
+`check` in `content/pigments.ts` once its question is answered. The showcase's art
+slide shows the newest three; to choose, write `{ kind: "art", slugs: ["…", "…", "…"] }`
+(three or four) in `content/showcase.ts`.
+
+### Paints: the swatches
+
+/art opens with a colour chart (`src/art/pigments/`): one swatch per paint, in
+`content/materials.ts`'s order. Each is a `<details>`: the swatch, its
+name and codes, and inside, its pigment's sheet (Colour Index name and number,
+chemistry, formula, class, history, the maker's ratings as marks, how it behaves, a
+TODO for what to check against the tube, numbered sources). So without JavaScript each
+swatch opens in place (a `<noscript>` style lays the chart out as a list). With it,
+`PigmentChart.tsx` keeps one sheet open at a time, in a drawer under the chart: out of
+flow, over the page below, as wide as the chart, never over the swatches. It slides
+down out of the chart's bottom rule (200 ms, ease-out; it just appears with reduced
+motion) when a sheet opens from closed; switching swatches swaps its content in place
+while an accent tab on its top rule glides to the new swatch (shown only when that
+swatch is in the chart's last row; the sheet's head names it by number in accent ink).
+A sheet taller than the screen scrolls inside the drawer, its head kept at the top. A
+mouse resting on a swatch opens it (after 140 ms) and leaving the chart closes it unless
+a click pinned it; Escape, Close or a click outside closes it. It changes no text.
+So nothing on the page moves: closing a sheet (or switching to a shorter one) while
+the screen shows the part of the page the drawer added would make the browser pull
+the page up to its new end, so the page's height is held at the screen's bottom until
+the reader scrolls back up. `node scripts/pigment-drawer.mjs <url> [--shots <dir>]`
+checks it at 1440 and 390 px (the swatches row and the title block stay put to 1 px,
+the page never scrolls by itself, layout shift 0); `pnpm verify` step 8 runs it.
+
+The swatches are drawn in SVG (`Swatch.tsx`): masstone at the top thinning to a wash,
+over an ink stripe that a transparent paint leaves black and an opaque one veils;
+specks for a granulating paint; a sheet's large swatch is a copy of its chip (an SVG
+`<use>`), so each is written into the page once. Their colours (`look`) are approximate. To show his
+own swatch instead, scan it, save it as `public/art/swatches/<paint-key>.jpg` (PNG or
+WebP also work; about 600 × 750 px, the swatch's 4:5 shape), and set
+`swatchImage: "/art/swatches/<paint-key>.jpg"` on the paint in `content/pigments.ts`. The page then says the swatch is scanned.
+His own words on a paint go in `artistNote` there; its sheet shows them under "From my painting:" only when set.
+
+### The close-up viewer
+
+- The painting page shows the painting as a picture. Above it, under the head's rule,
+  is the close-up's toolbar (`src/art/viewer/Inspect.tsx`): on the left the mode,
+  "None · Lamp · Layers" (None, the plain picture, to start); on the right the mode's
+  controls, or for None a line on what the others do. Only when a mode other than
+  None is chosen do the viewer's code (`Stage.tsx`, through `import()`) and its files
+  load, so the page's first load and Lighthouse are untouched (`test/viewer.test.ts`,
+  and `pnpm verify` step 8 on the built page). Without JavaScript the toolbar is hidden.
+- The toolbar has one fixed height in every mode, laid out by its own width
+  (container queries in `art.css`): wide, the mode in 3 columns and its controls in
+  the other 9, two rows (the controls; a line of keys and notes); medium, the mode
+  above its controls; narrow (a phone), the mode above a "Controls" button that opens
+  the controls over the painting. So choosing a mode moves nothing on the page: the
+  toolbar, the painting and the facts stay put, the well keeps its colour (the Lamp
+  draws the well's colour around the sheet), and the layout-shift score is 0.
+  `node scripts/viewer-shift.mjs <url> [route] [--sweep] [--shots <dir>]` measures it
+  (at many widths with `--sweep`), on the GPU (`--use-angle=metal`); `pnpm verify`
+  step 8 runs it at 1440 and 390 px.
+- Both effects are ports of their prototypes, with the prototypes' shaders unchanged,
+  except that around the sheet the Lamp draws the well's colour, not the prototype's dark table:
+  - the Lamp (`lamp/`): the relief estimated on the GPU from the scan (`estimate.ts`:
+    grain, a procedural cotton tooth, ink, gouache, cockling, Sobel normals) and the
+    paper shading (`render.ts`: Oren–Nayar, sheen, GGX per surface, height-field
+    shadows, ACES); soft or raking lamp, height, relief, four views, zoom to 8× (wheel,
+    pinch; double-click fits), keys R, S, N.
+  - the Layers (`diorama/`): the shadow box (cards at their depths, cast shadows, a
+    moving light, depth of field, click to focus) or the ray-marched depth field;
+    three views, depth and blur sliders, tilt on phones.
+- The canvas covers the well; at rest the sheet lies exactly over the picture. A
+  phone (coarse pointer) gets the smaller files. With reduced motion nothing drifts
+  by itself. No WebGL 2 (with float targets, for the Lamp): a note, and the picture.
+
 ## How to add a widget
 
 A widget is one block of the home document: a folder, `src/widgets/<slug>/`, plus one
@@ -342,8 +530,9 @@ rendered on the server, so every slide's text and links are in the HTML).
   or its empty frame crossed with its `TODO(jorge)`; a post's cover, or its Open Graph
   image; for Now, its dated lines), then the kind and number, the name, the facts line
   (role · period; date · minutes), the first sentences of the item's own description,
-  and an Open link to its page (`items.ts` takes all of it from the item's content). A
-  slide's address is its kind and slug (`#work-<slug>`, `#post-<slug>`, `#now`); the
+  and an Open link to its page (`items.ts` takes all of it from the item's content).
+  The art slide's figure is a strip of paintings, each linked to its page. A
+  slide's address is its kind and slug (`#work-<slug>`, `#post-<slug>`, `#now`, `#art`); the
   first slide of a kind also answers the old home sections' addresses (`#work`,
   `#experience`, `#writing`).
 - The bar: one cell per slide (number, kind, name), ruled like a title block, with
@@ -388,6 +577,30 @@ rendered on the server, so every slide's text and links are in the HTML).
   768, 1024, 1280, 1440, 1920 and 2560 px wide (720 and 900 high) for a scrollWidth over its
   clientWidth, an element past its right edge, and a page that scrolls sideways.
 - To check it in a browser: `pnpm verify` (step 6, and the per-slide screenshots).
+
+## Hiding /toys
+
+/toys is built by hand and not ready, so a Vercel production deploy hides it; `pnpm dev`,
+a local build and a preview deploy show it. One function decides, `toysShown()` in
+`src/ui/sections.ts`: true unless `VERCEL_ENV=production`.
+
+- The running head and the footer list `shownSections()`, which leaves Toys out when
+  it is hidden. Every sheet number comes from the same file: a sheet's number is its
+  place among the sheets shown (`shownSheets()`: the sections, then /cv and
+  /work-with-me), and a page writes its label as `sheetLabel("/art")`, never by hand.
+  So with Toys hidden the head reads 01 Work, 02 Blog, 03 Art, 04 About, the labels
+  follow (CV 05, Work with me 06), and the paintings are 3.1, 3.2… (`plateNo` reads
+  Art's number); with Toys shown, Toys is 03, Art 04 and the paintings 4.1, 4.2…
+  `test/site.test.ts` checks both orders and that no route writes a number.
+- `src/app/toys/layout.tsx` calls `notFound()` when it is hidden, so /toys and every
+  /toys/<slug> are a 404 (with `noindex`); the pages under it are untouched.
+- `test/toys-hidden.test.ts` checks both states: hidden, no link to /toys in the head or
+  the footer, none in the sitemap, llms.txt or RSS, and the routes are a 404; shown, all
+  there. When the toys get rows in the sitemap, llms.txt, the twins or the showcase,
+  add them only when `toysShown()` (for the sitemap, llms.txt and RSS, that test
+  fails until then).
+
+To publish /toys: set `TOYS_PUBLIC = true` in `src/ui/sections.ts`.
 
 ## Measurement
 

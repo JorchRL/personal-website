@@ -5,6 +5,8 @@ const OLD_BLOG = { type: "host" as const, value: "blog.jrlgs.dev" };
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // AVIF first (about 40% smaller than WebP for the paintings), WebP for browsers without it.
+  images: { formats: ["image/avif", "image/webp"] },
   // The old site's project pages, still linked from CVs and LinkedIn.
   async redirects() {
     return [
@@ -28,13 +30,14 @@ const nextConfig: NextConfig = {
       { source: "/:slug/:rest+", has: [OLD_BLOG], destination: "https://jrlgs.dev/blog", statusCode: 301 },
     ];
   },
-  // The markdown twins: /blog/<slug>.md and /work/<slug>.md are served by the
+  // The markdown twins: /blog/<slug>.md, /work/<slug>.md and /art/<slug>.md are served by the
   // route handlers under src/app/md/. An .mdx post's page is rendered by
   // src/app/mdx/blog/[slug], so its components' code stays off markdown posts.
   async rewrites() {
     return [
       { source: "/blog/:slug.md", destination: "/md/blog/:slug" },
       { source: "/work/:slug.md", destination: "/md/work/:slug" },
+      { source: "/art/:slug.md", destination: "/md/art/:slug" },
       ...mdxPostSlugs().map((slug) => ({ source: `/blog/${slug}`, destination: `/mdx/blog/${slug}` })),
     ];
   },

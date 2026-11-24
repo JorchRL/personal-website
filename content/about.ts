@@ -113,7 +113,7 @@ export const skills: SkillRow[] = [
   },
   {
     skill: "Stripe",
-    usedFor: "Whiz.Study's subscription payments",
+    usedFor: "Whiz.Study's payments: subscriptions, one-time payments and free-trial entitlements",
     href: "/work/whiz-study",
     lastUsed: { endOf: "whiz-study" },
     depth: "Work",
@@ -134,7 +134,7 @@ export const skills: SkillRow[] = [
   },
   {
     skill: "Leading and teaching a team",
-    usedFor: "Five junior engineers at Whiz.Study: a weekly tech meeting, readings, The Pragmatic Programmer",
+    usedFor: "Three junior engineers and two junior developers I mentored, at Whiz.Study: a weekly tech meeting, readings, The Pragmatic Programmer",
     href: "/work/whiz-study",
     lastUsed: { endOf: "whiz-study" },
     depth: "Work",

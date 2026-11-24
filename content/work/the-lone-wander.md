@@ -15,7 +15,7 @@ figure:
   alt: "A diagram of The Lone Wander's layers. Regions, the places, depend on Simulation, the running scene with the wanderer, the camera and the UI, which depends on World, the truth: facts in, state out, no nodes. All three may use the Host, which owns the scene slot, the UI stack, pause, saves and named timers; a screen is open, so the game is paused."
   width: 1200
   height: 630
-  caption: "A diagram, not a screenshot. Dependencies point one way, toward the world's facts; everything may use the host."
+  caption: "Dependencies point one way, toward the world's facts. Everything may use the host."
 ---
 
 The Lone Wander is a small 3D Zelda-like I am making in Godot. You explore an

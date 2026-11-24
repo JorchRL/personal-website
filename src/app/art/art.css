@@ -1,0 +1,607 @@
+/* The art section: /art (a contact sheet of plates) and /art/<slug> (one
+   painting, large, with its facts). Paintings are never cropped: each plate
+   keeps its picture's own shape. */
+
+/* ---------- /art ---------- */
+
+/* Rows of plates that fill the sheet's width, every plate in a row the same
+   height: a plate grows in step with its shape (width over height, --ratio),
+   from a row height of --row. The last row keeps that height instead of
+   stretching (the filler after it takes the rest). */
+.plates {
+  --row: 330px;
+  list-style: none;
+  margin: 0;
+  padding: 18px 0 0;
+  border-top: 2px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 44px var(--gap);
+}
+
+.plates::after {
+  content: "";
+  flex: 999 1 0;
+}
+
+.plate-cell {
+  flex: var(--ratio) 1 calc(var(--ratio) * var(--row));
+  min-width: 0;
+}
+
+.plate-cell a {
+  display: block;
+}
+
+.plate-pic {
+  display: block;
+  aspect-ratio: var(--ratio);
+  background: var(--paper-2);
+}
+
+.plate-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Under each plate: its number, title and year, ruled like a figure's caption. */
+.plate-cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding-top: 9px;
+  margin-top: 10px;
+  border-top: 1px solid var(--hair);
+}
+
+.plate-cap b {
+  font-weight: 600;
+}
+
+.plate-cap .t {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.plate-cap .y {
+  margin-left: auto;
+  color: var(--ink-2);
+}
+
+.plate-cap mark.todo {
+  font-size: 10.5px;
+}
+
+.plate-cell a:hover .t {
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.plate-cell a:hover .plate-cap {
+  border-top-color: var(--accent);
+}
+
+@media (max-width: 1100px) {
+  .plates {
+    --row: 240px;
+  }
+}
+
+/* A phone: one plate a row, the whole width. */
+@media (max-width: 700px) {
+  .plates {
+    gap: 32px;
+  }
+
+  .plate-cell {
+    flex: 1 1 100%;
+  }
+}
+
+/* ---------- /art/<slug> ---------- */
+
+/* The painting, whole, on a well the width of the sheet: never taller than
+   most of the screen, so it is seen at once. */
+.art-plate {
+  margin: 34px 0 0;
+}
+
+.art-plate .well {
+  display: flex;
+  justify-content: center;
+  padding: clamp(16px, 3.2vw, 48px);
+  border-top: 2px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+
+/* Its width is set before the picture arrives (as wide as the well allows, and
+   no taller than the cap at its shape, --ratio), so nothing moves when it loads. */
+.art-plate .viewer-box {
+  position: relative;
+  display: block;
+  width: min(100%, calc(min(78svh, 1100px) * var(--ratio)));
+  aspect-ratio: var(--ratio);
+}
+
+.art-plate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The close-up viewer (src/art/viewer/): its canvas covers the whole well, with
+   the sheet exactly over the picture at rest, and shows once it has drawn.
+   Around the sheet, both draw the well's own colour, so the well never changes. */
+.art-plate .well {
+  position: relative;
+}
+
+.viewer-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+  touch-action: none;
+}
+
+.viewer-canvas[data-live] {
+  opacity: 1;
+}
+
+.viewer-canvas[data-effect="lamp"] {
+  cursor: none;
+}
+
+.viewer-canvas[data-effect="layers"] {
+  cursor: crosshair;
+}
+
+/* The lamp's mark: a ring where the lamp is, with its height beside it. */
+.lampmark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border: 1px solid rgba(255, 240, 220, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 18px 4px rgba(255, 230, 200, 0.25);
+}
+
+.lampmark::after {
+  content: attr(data-h);
+  position: absolute;
+  left: 28px;
+  top: 3px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255, 240, 220, 0.75);
+  white-space: nowrap;
+}
+
+/* The close-up's toolbar, above the well, under the head's rule: one block of
+   one height in every mode, so choosing a mode moves nothing (checked by
+   scripts/viewer-shift.mjs, pnpm verify step 8). It is laid out by its own
+   width:
+   - narrow (a phone): the mode, then one line: None's hint, or a "Controls"
+     button that opens the mode's controls over the painting;
+   - medium: the mode, then the mode's controls in two rows (the controls; one
+     line of keys and notes);
+   - wide (from 1150 px): the mode in the first 3 of the 12 columns, its
+     controls in the other 9, in the same two rows. */
+.inspect {
+  --row: 28px;
+  --line: 16px;
+  --rgap: 6px;
+  position: relative;
+  z-index: 2;
+  container-type: inline-size;
+  padding: 0 0 14px;
+}
+
+.inspect [hidden] {
+  display: none !important;
+}
+
+.inspect-in {
+  display: grid;
+  grid-template-rows: var(--row) 30px;
+  row-gap: 8px;
+}
+
+.inspect-mode {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.inspect-mode .label {
+  font-size: 10.5px;
+  color: var(--ink);
+}
+
+.inspect .seg {
+  display: inline-flex;
+}
+
+.inspect .seg button,
+.inspect .tilt,
+.inspect-more {
+  display: inline-flex;
+  align-items: center;
+  height: var(--row);
+  font: 500 10px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 0 9px;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.inspect-mode .seg button {
+  justify-content: center;
+  min-width: 62px;
+  font-size: 11px;
+}
+
+.inspect .seg button + button {
+  border-left: 0;
+}
+
+.inspect .seg button[aria-pressed="true"],
+.inspect-more[aria-expanded="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.inspect .seg button:not([aria-pressed="true"]):hover,
+.inspect .tilt:hover,
+.inspect-more:not([aria-expanded="true"]):hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+
+/* The "Controls" button's mark: + folded, − open. */
+.inspect-more::after {
+  content: "+";
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.inspect-more[aria-expanded="true"]::after {
+  content: "\2212";
+}
+
+.inspect-tools {
+  position: static;
+  min-width: 0;
+}
+
+/* None's hint, the loading line, or why the viewer failed: one line per row. */
+.inspect-intro {
+  display: grid;
+  grid-template-rows: 15px 15px;
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 15px;
+  color: var(--ink-2);
+}
+
+.inspect-intro > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.inspect-intro > .inspect-fail {
+  grid-row: 1 / span 2;
+  white-space: normal;
+  color: var(--ink);
+}
+
+.inspect-fold {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  margin: 0;
+  font-size: 10.5px;
+  color: var(--ink-2);
+}
+
+.inspect-fold > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Folded: the controls open over the painting, under the toolbar, and move nothing. */
+.inspect-bar {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 12px 0 14px;
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.inspect-bar[data-open] {
+  display: block;
+}
+
+.inspect-ctls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
+
+.inspect .ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inspect-panel .label {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.inspect input[type="range"] {
+  width: 88px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.inspect input[type="checkbox"] {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.inspect .val {
+  min-width: 6ch;
+  font-size: 10.5px;
+}
+
+/* The keys (or what the effect is doing) and what is estimated, in one line. */
+.inspect-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin: 10px 0 0;
+  font-size: 10.5px;
+  line-height: var(--line);
+  color: var(--ink-2);
+}
+
+
+.inspect-note::before {
+  content: "";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: 0.55em;
+  background: var(--accent);
+  vertical-align: -0.03em;
+}
+
+@media (max-width: 700px) {
+  /* Over the painting, edge to edge like the well. */
+  .inspect-bar {
+    left: calc(-1 * var(--margin));
+    right: calc(-1 * var(--margin));
+    padding-inline: var(--margin);
+  }
+}
+
+@container (min-width: 880px) {
+  .inspect-in {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: var(--row) calc(var(--row) + var(--rgap) + var(--line));
+    column-gap: var(--gap);
+    row-gap: 10px;
+  }
+
+  .inspect-mode,
+  .inspect-tools {
+    grid-column: 1 / -1;
+  }
+
+  .inspect-fold {
+    display: none;
+  }
+
+  .inspect-intro,
+  .inspect-panel {
+    display: grid;
+    grid-template-rows: var(--row) var(--line);
+    row-gap: var(--rgap);
+    align-items: center;
+  }
+
+  .inspect-intro > .inspect-fail {
+    grid-row: 1;
+  }
+
+  .inspect-bar {
+    display: block;
+    position: static;
+    padding: 0;
+    background: none;
+    border: 0;
+  }
+
+  .inspect-ctls {
+    flex-wrap: nowrap;
+  }
+
+  .inspect-info {
+    flex-wrap: nowrap;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* The keys take the line's room, so the note keeps its place at the end while the frame rate changes. */
+  .inspect-keys {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .inspect-note {
+    flex: none;
+    white-space: nowrap;
+  }
+}
+
+@container (min-width: 1150px) {
+  .inspect-in {
+    grid-template-rows: var(--row) var(--line);
+    row-gap: var(--rgap);
+  }
+
+  .inspect-mode {
+    grid-column: 1 / span 3;
+    grid-row: 1;
+  }
+
+  .inspect-tools {
+    position: relative;
+    grid-column: 4 / -1;
+    grid-row: 1 / span 2;
+  }
+
+  /* A hairline between the mode and its controls, in the gutter. */
+  .inspect-tools::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(-0.5 * var(--gap));
+    border-left: 1px solid var(--hair);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer-canvas {
+    transition: none;
+  }
+}
+
+.art-plate figcaption .how {
+  color: var(--ink-3);
+}
+
+/* Fan art: someone else's character, said plainly beside the title and the medium. */
+.fan-art {
+  display: inline-block;
+  margin-left: 0.8em;
+  padding: 0 5px;
+  border: 1px solid var(--ink-3);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  vertical-align: 0.1em;
+}
+
+.art-facts .check {
+  margin: 8px 0 0;
+  font-size: 11px;
+}
+
+/* The enquiry and the print, under the facts: a question and a button. */
+.art-offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hair);
+}
+
+.art-offer p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin: 0;
+}
+
+.art-offer .q {
+  font-weight: 650;
+}
+
+.art-plate figcaption {
+  margin: 0;
+  padding-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.art-plate figcaption .fig {
+  margin-right: 0.6em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.art-plate + .facts {
+  margin-top: 28px;
+}
+
+.art-page .article-head .dek mark.todo {
+  font-size: 0.6em;
+}
+
+@media (max-width: 700px) {
+  .art-plate .well {
+    margin-inline: calc(-1 * var(--margin));
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .art-plate .viewer-box {
+    width: 100%;
+  }
+
+  /* A fact that takes a whole row keeps its rule when another follows. */
+  .art-facts > div.wide:not(:last-child) {
+    border-bottom: 1px solid var(--rule);
+  }
+}
+
+/* Fan art's label under the facts: whose character it is, and that it is not for sale. */
+.fan-note {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
